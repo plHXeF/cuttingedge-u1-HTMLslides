@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paragraph 7 · 从虚拟制造到智能勘查</title>
+<style>
+:root{
+  /* ---- paper & ink ---- */
+  --paper:#FAF9F5; --paper2:#F2EFE6; --card:#FFFFFF; --card2:#FBF9F4;
+  --ink:#191919; --ink2:#3D3D3A; --muted:#75726A; --dim:#A9A49A;
+  --line:#E6E1D6; --line2:#EFEBE2;
+  /* ---- accents ---- */
+  --clay:#BE5F3C; --coral:#D97757; --gold:#9A6B1F; --olive:#5F7A45;
+  --sky:#3E6E9E; --plum:#7C5C9E; --rose:#B0557D; --mustard:#8A6D1F; --brick:#B4453A;
+  /* ---- legacy aliases (used by slide markup & canvas code) ---- */
+  --cyan:var(--clay); --amber:var(--gold); --pink:var(--rose); --violet:var(--plum);
+  --green:var(--olive); --red:var(--brick); --blue:var(--sky); --yellow:var(--mustard);
+  --en:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  --zh:"Microsoft YaHei UI","Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+  --serif:Georgia,"Times New Roman",serif;
+  --mono:Consolas,"Cascadia Mono","Courier New",monospace;
+  --sh1:0 1px 1px rgba(25,25,25,.03), 0 2px 6px rgba(25,25,25,.04);
+  --sh2:0 2px 4px rgba(25,25,25,.04), 0 10px 30px rgba(25,25,25,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--paper2);color:var(--ink);font-family:var(--en),var(--zh)}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:1600px;height:900px;flex:none;transform-origin:center center;background:var(--paper);overflow:hidden;border-radius:10px;box-shadow:0 10px 50px rgba(25,25,25,.14)}
+#stage::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(900px 520px at 88% -12%,rgba(217,119,87,.10),transparent 62%),radial-gradient(760px 500px at -8% 112%,rgba(106,155,204,.10),transparent 60%)}
+#stage::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(25,25,25,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(25,25,25,.028) 1px,transparent 1px);background-size:44px 44px}
+.slide{position:absolute;inset:0;padding:54px 72px 62px;opacity:0;visibility:hidden;transition:opacity .42s ease,transform .42s ease;transform:translateX(34px)}
+.slide.active{opacity:1;visibility:visible;transform:none}
+.slide.past{transform:translateX(-34px)}
+h1{font-size:66px;font-weight:800;letter-spacing:-.5px;line-height:1.14;color:var(--ink)}
+h2{font-size:38px;font-weight:800;letter-spacing:-.3px;margin-bottom:6px;display:flex;align-items:center;gap:16px;color:var(--ink)}
+h2 .no{font-family:var(--mono);font-size:17px;color:#fff;background:var(--clay);padding:5px 11px;border-radius:8px;font-weight:700;box-shadow:var(--sh1)}
+h2 .tag{font-size:15px;font-weight:600;color:var(--muted);border:1px solid var(--line);background:var(--card);padding:5px 12px;border-radius:999px}
+.sub{color:var(--muted);font-size:20px;margin-bottom:22px}
+h3{font-size:23px;margin-bottom:10px;color:var(--ink);font-weight:750}
+p,li{font-size:21px;line-height:1.6;color:var(--ink2)}
+.zh{font-family:var(--zh)}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)} .dimc{color:var(--dim)}
+.c-cyan{color:var(--clay)} .c-amber{color:var(--gold)} .c-pink{color:var(--rose)} .c-violet{color:var(--plum)} .c-green{color:var(--olive)} .c-red{color:var(--brick)} .c-blue{color:var(--sky)} .c-yellow{color:var(--mustard)}
+b,strong{font-weight:700;color:var(--ink)}
+/* ---------- cards ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 24px;position:relative;box-shadow:var(--sh1)}
+.card.glow{box-shadow:var(--sh2);border-color:#E8D6CC;background:linear-gradient(180deg,#FFFDFB,#FFF8F3)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.row{display:flex;gap:20px;align-items:center}
+.pill{display:inline-block;padding:3px 13px;border-radius:999px;font-size:16px;border:1px solid var(--line);background:var(--card);color:var(--muted);margin-right:6px}
+.btn{font:inherit;font-size:17px;padding:9px 18px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink2);cursor:pointer;transition:.18s;user-select:none;box-shadow:var(--sh1)}
+.btn:hover{background:#FFF6F1;border-color:var(--coral);color:var(--clay)}
+.btn.on,.btn.primary{background:var(--clay);color:#fff;border-color:var(--clay);font-weight:700}
+.btn.on:hover,.btn.primary:hover{background:#A8532F;color:#fff}
+.btn.warn{border-color:#E7C3BC;color:var(--brick)} .btn.warn:hover{background:#FDF0EE;border-color:var(--brick)}
+.btn:disabled{opacity:.4;cursor:default}
+kbd{font-family:var(--mono);font-size:14px;background:var(--card);border:1px solid var(--line);border-bottom-width:3px;border-radius:7px;padding:2px 8px;box-shadow:var(--sh1)}
+/* ---------- fragments ---------- */
+.f{opacity:0;transform:translateY(12px);transition:opacity .42s ease,transform .42s ease}
+.f.on{opacity:1;transform:none}
+.f.pop{transform:scale(.9)} .f.pop.on{transform:none}
+.f.fl{transform:translateX(-20px)} .f.fl.on{transform:none}
+/* ---------- HUD ---------- */
+#hud{position:fixed;left:0;right:0;bottom:0;height:5px;z-index:50;background:rgba(25,25,25,.05)}
+#bar{height:100%;width:0;background:linear-gradient(90deg,var(--clay),var(--coral));transition:width .4s}
+#ctrl{position:fixed;right:14px;bottom:14px;z-index:51;display:flex;gap:6px;align-items:center;opacity:.3;transition:.3s;font-family:var(--mono);font-size:14px}
+#ctrl:hover{opacity:1}
+#ctrl button{background:var(--card);color:var(--ink2);border:1px solid var(--line);border-radius:9px;padding:6px 11px;cursor:pointer;font:inherit;box-shadow:var(--sh1)}
+#ctrl button:hover{border-color:var(--coral);color:var(--clay)}
+#counter{color:var(--muted);padding:0 6px;cursor:pointer}
+#stepdots{position:absolute;right:72px;top:60px;display:flex;gap:6px;z-index:5}
+#stepdots i{width:8px;height:8px;border-radius:50%;background:#DFD9CC;transition:.3s}
+#stepdots i.on{background:var(--clay);transform:scale(1.15)}
+#menu{position:fixed;inset:0;background:rgba(247,245,238,.97);z-index:80;display:none;padding:50px;overflow:auto}
+#menu.show{display:block}
+#menu .items{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1320px;margin:0 auto}
+#menu .it{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 17px;cursor:pointer;font-size:15px;color:var(--ink2);box-shadow:var(--sh1);transition:.18s}
+#menu .it:hover,#menu .it.cur{border-color:var(--coral);background:#FFF8F3;transform:translateY(-2px)}
+#menu .it span{font-family:var(--mono);color:var(--clay);margin-right:8px}
+#help{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 32px;z-index:90;display:none;font-size:16px;line-height:2.1;color:var(--ink2);box-shadow:var(--sh2)}
+#help.show{display:block}
+/* ---------- tokens ---------- */
+.tok{display:inline-flex;align-items:stretch;border-radius:11px;border:1.5px solid #DDD6C6;background:var(--card);margin:0 5px;font-size:28px;line-height:1;position:relative;transition:all .42s ease;cursor:default;white-space:nowrap;box-shadow:var(--sh1)}
+.tok .pc{padding:9px 8px 9px;color:var(--ink)}
+.tok .pc+.pc{border-left:1.5px dashed #CFC8B6}
+.tok .tid{position:absolute;left:0;right:0;bottom:-19px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--dim);opacity:0;transition:.3s}
+.sent.ids .tok .tid{opacity:1}
+.tok.punct{border-color:transparent;background:none;box-shadow:none;margin:0 -2px}
+.sent{position:relative;display:flex;flex-wrap:wrap;align-items:center;row-gap:100px;padding:86px 10px 88px;justify-content:center;margin-top:14px}
+.sent .brk{flex-basis:100%;height:0}
+.sent svg.arcs{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.arc{fill:none;stroke-linecap:round;transition:opacity .35s, stroke-width .3s}
+.arc-l{font-size:14px;font-family:var(--zh);paint-order:stroke;stroke:#FFFFFF;stroke-width:5px;transition:opacity .35s;font-weight:700}
+.sent.colored .tok[data-r=pur]{border-color:#D8C7E4;background:#F8F4FB}
+.sent.colored .tok[data-r=sub]{border-color:#EBC9B8;background:#FDF2EC}
+.sent.colored .tok[data-r=pre]{border-color:#E4CFA6;background:#FCF6E8}
+.sent.colored .tok[data-r=obj]{border-color:#CBDBBB;background:#F4F8EF}
+.sent.colored .tok[data-r=mod]{border-color:#EBC2D3;background:#FCF2F6}
+.sent.colored .tok[data-r=cls]{border-color:#BED2E6;background:#F1F6FB}
+.sent.colored .tok[data-r=adv]{border-color:#E2D49B;background:#FBF7E7}
+.sent.isolated .tok:not(.core){opacity:.14;transform:scale(.86)}
+.sent.skel .tok.core{box-shadow:0 0 0 2px var(--coral),0 6px 18px rgba(190,95,60,.18);border-color:var(--clay)}
+.sent.focus .tok{opacity:.38}
+.sent.focus .tok.hl{opacity:1;box-shadow:0 0 0 2px var(--clay)}
+.sent.focus .tok.hl2{opacity:1}
+.legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-size:16px;color:var(--ink2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:14px;border-radius:5px;display:inline-block;border:1px solid rgba(25,25,25,.12)}
+.sk-box{font-size:30px;text-align:center;font-weight:700;letter-spacing:.2px;color:var(--ink)}
+.sk-box em{font-style:normal;color:var(--clay)}
+/* ---------- word cards ---------- */
+.word{font-size:50px;font-weight:800;letter-spacing:-.5px;font-family:var(--serif);color:var(--ink)}
+.ipa{font-family:var(--mono);color:var(--muted);font-size:19px}
+.morph{display:flex;gap:0;margin:12px 0 6px}
+.morph .m{padding:9px 16px;font-size:28px;font-weight:700;font-family:var(--serif);border:1.5px solid var(--line);background:var(--card);cursor:pointer;transition:.25s;position:relative;color:var(--ink)}
+.morph .m:first-child{border-radius:12px 0 0 12px} .morph .m:last-child{border-radius:0 12px 12px 0}
+.morph .m+.m{border-left:1.5px dashed #D8D1C0}
+.morph .m:hover,.morph .m.on{background:#FDF2EC;border-color:var(--coral);color:var(--clay)}
+.morph .m small{display:block;font-size:13px;font-weight:400;font-family:var(--zh);color:var(--muted);text-align:center;margin-top:4px}
+.ex{font-size:18px;line-height:1.45;padding:7px 12px;border-left:3px solid var(--line);margin:8px 0;cursor:pointer;border-radius:0 10px 10px 0;transition:.2s;color:var(--ink2)}
+.ex:hover{background:#FBF9F4;border-left-color:var(--coral)}
+.ex .tr{display:block;color:var(--clay);max-height:0;overflow:hidden;transition:max-height .4s, margin .3s;font-family:var(--zh);font-size:18px}
+.ex.open .tr{max-height:80px;margin-top:4px}
+.ex .hint{float:right;font-size:13px;color:var(--dim)}
+.lvl{display:inline-block;font-size:13px;font-weight:700;padding:3px 9px;border-radius:6px;background:var(--gold);color:#fff;vertical-align:middle;margin-left:10px;letter-spacing:.5px}
+.lvl.c4{background:var(--olive);color:#fff}
+.lvl.fun{background:var(--rose);color:#fff}
+.mean{font-size:20px;line-height:1.65;color:var(--ink2)}
+.mean b{color:var(--clay)}
+.quiz .opt{display:inline-block;margin:6px 8px 0 0}
+.quiz .opt.right{background:#EFF5E9;border-color:var(--olive);color:var(--olive);font-weight:700}
+.quiz .opt.wrong{background:#FCEFED;border-color:var(--brick);color:var(--brick);animation:shake .35s}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.reveal{color:var(--olive);opacity:0;transition:.4s;font-family:var(--zh)}
+.reveal.on{opacity:1}
+/* ---------- reading ---------- */
+.para{font-size:29px;line-height:1.95;font-family:var(--serif);color:#26262A}
+.para .s{padding:3px 4px;border-radius:8px;transition:.3s;cursor:pointer}
+.para .s:hover{background:#F6F3EA}
+.para .s.reading{background:#FDF1EA;box-shadow:0 0 0 1px var(--coral)}
+.para .sn{font-family:var(--mono);font-size:13px;color:#fff;background:var(--dim);border-radius:5px;padding:1px 6px;vertical-align:super;margin-right:5px}
+.para .w{border-bottom:2px dotted var(--coral);cursor:help}
+#gloss{position:absolute;z-index:40;background:var(--card);border:1px solid var(--coral);border-radius:12px;padding:9px 13px;font-size:16px;pointer-events:none;opacity:0;transition:opacity .2s;max-width:380px;font-family:var(--zh);color:var(--ink2);box-shadow:var(--sh2)}
+.q{display:flex;gap:12px;align-items:flex-start;font-size:22px;color:var(--ink2)}
+.q .qn{flex:none;width:34px;height:34px;border-radius:50%;background:var(--clay);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh1)}
+/* ---------- svg / misc ---------- */
+svg text{font-family:var(--en),var(--zh)}
+.note{font-size:16px;color:var(--muted);line-height:1.6}
+.tagline{position:absolute;left:72px;bottom:26px;font-size:14px;color:var(--dim);font-family:var(--mono)}
+.big-q{font-size:33px;line-height:1.5;font-weight:700;color:var(--ink)}
+.hl-y{background:linear-gradient(transparent 58%,rgba(217,119,87,.30) 0)}
+.box-dash{border:1.5px dashed #DCD6C6;border-radius:14px;padding:14px 18px;background:var(--card2)}
+table.t{border-collapse:collapse;width:100%;font-size:19px}
+table.t td,table.t th{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+table.t th{color:var(--muted);font-weight:600;font-size:16px}
+.chip{display:inline-block;font-family:var(--mono);font-size:18px;padding:4px 11px;border-radius:8px;border:1px solid var(--line);background:var(--card);margin:3px;color:var(--ink2);box-shadow:var(--sh1)}
+.agenda-item{display:flex;align-items:center;gap:22px;padding:16px 22px;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-bottom:14px;box-shadow:var(--sh1)}
+.agenda-item .n{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--clay);width:46px}
+.agenda-item .t{font-size:27px;font-weight:750;color:var(--ink)}
+.agenda-item .d{font-size:18px;color:var(--muted);margin-left:auto}
+canvas{display:block}
+.stat{font-family:var(--mono);font-size:15px;color:var(--muted)}
+.stat b{color:var(--clay);font-size:21px;display:block}
+input[type=range]{accent-color:var(--clay);width:180px;vertical-align:middle}
+input[type=text]{font:inherit;font-size:21px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px 14px;width:100%;box-shadow:inset 0 1px 2px rgba(25,25,25,.03)}
+input[type=text]:focus{outline:none;border-color:var(--coral);box-shadow:0 0 0 3px rgba(217,119,87,.15)}
+.mode-btn{display:block;width:100%;text-align:left;margin-bottom:8px;font-size:16px;line-height:1.4;border-radius:14px}
+.mode-btn small{display:block;font-size:13px;opacity:.75;font-weight:400}
+@keyframes blink{50%{opacity:0}}
+.cursor{display:inline-block;width:3px;height:1em;background:var(--clay);vertical-align:-4px;animation:blink 1s steps(1) infinite;margin-left:4px}
+.shake{animation:shake .4s 2}
+.deco{position:absolute;pointer-events:none;opacity:.9}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+<div id="stepdots"></div>
+<div id="gloss"></div>
+
+<!-- ============ 01 COVER ============ -->
+<section class="slide" data-title="封面：从虚拟制造到智能勘查" id="s-cover">
+  <canvas id="coverbg" width="1600" height="900" style="position:absolute;inset:0;opacity:.85"></canvas>
+  <div style="position:relative;margin-top:90px">
+    <div class="pill" style="font-size:18px">Unit · Intelligent Manufacturing and Sustainability</div>
+    <div class="pill" style="font-size:18px;color:var(--cyan);border-color:var(--cyan)">Paragraph [7]</div>
+    <h1 style="margin-top:28px;font-size:84px">从<span class="c-cyan">虚拟制造</span><br>到<span class="c-amber">智能勘查</span></h1>
+    <div style="font-size:26px;color:var(--muted);margin-top:14px;letter-spacing:1px">From Virtual Manufacturing to Intelligent Exploration</div>
+    <div class="f" data-f="1" style="margin-top:70px">
+      <div class="big-q zh">能不能让机器 <span class="hl-y">先在虚拟世界里犯错</span>，<br>再去现实世界工作？<span class="cursor"></span></div>
+    </div>
+    <div class="f" data-f="2" style="margin-top:22px;font-size:22px;color:var(--muted)">—— 讲到最后，我们会让一台「<span class="c-amber">找矿机器人</span>」亲自回答这个问题 🤖⛏️</div>
+  </div>
+  <div class="tagline">矿床学 × xAI ｜ 按 → / 空格 前进 · ← 后退 · M 目录 · F 全屏 · ? 帮助</div>
+</section>
+
+<!-- ============ 02 AGENDA ============ -->
+<section class="slide" data-title="目录">
+  <h2>这一段，我们怎样读懂它？</h2>
+  <div class="sub">从「读懂语言」一路走到「让模型自己学」</div>
+  <div style="display:grid;grid-template-columns:1fr 480px;gap:40px;margin-top:10px">
+    <div>
+      <div class="agenda-item f fl" data-f="1"><span class="n">01</span><span class="t">原文通读</span><span class="d">先抓住作者在说什么</span></div>
+      <div class="agenda-item f fl" data-f="1"><span class="n">02</span><span class="t">专业术语</span><span class="d">CNC · CMM · 数字孪生 · 价值链</span></div>
+      <div class="agenda-item f fl" data-f="1"><span class="n">03</span><span class="t">关键词汇</span><span class="d">词根拆解 · 僻义 · 造句互译</span></div>
+      <div class="agenda-item f fl" data-f="1"><span class="n">04</span><span class="t">逐句翻译与语法</span><span class="d">六句话 · 主干 · 修饰关系</span></div>
+      <div class="agenda-item f fl" data-f="1"><span class="n">05</span><span class="t">矿床学 × AI 拓展</span><span class="d">语言处理 · 梯度 · 强化学习</span></div>
+    </div>
+    <div class="card glow f pop" data-f="2">
+      <h3 class="c-cyan">🧩 先拆开，再连起来</h3>
+      <p style="font-size:19px">读懂这一段，先试试两个小工具：</p>
+      <div style="margin:14px 0"><span class="tok" style="font-size:22px"><span class="pc">trans</span><span class="pc">cend</span><span class="pc">ing</span></span></div>
+      <p style="font-size:18px"><b class="c-amber">词根拆解</b>：把单词切成小片 → 记住词义与构词</p>
+      <svg width="400" height="70" style="margin:6px 0"><path d="M40 55 Q200 -10 360 55" stroke="#BE5F3C" stroke-width="4" fill="none"/><circle cx="40" cy="55" r="7" fill="#9A6B1F"/><circle cx="360" cy="55" r="7" fill="#5F7A45"/><text x="200" y="38" fill="#75726A" font-size="14" text-anchor="middle">词语关系连线</text></svg>
+      <p style="font-size:18px"><b class="c-amber">关系连线</b>：谁做什么、谁修饰谁 → 看清句子结构</p>
+      <p style="font-size:18px;margin-top:10px">这两个小工具还能用在哪里？最后一起揭晓 😉</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 READING ============ -->
+<section class="slide" data-title="原文通读" id="s-read">
+  <h2><span class="no">01</span>原文通读：先抓住作者在说什么</h2>
+  <div class="row" style="gap:28px;margin:6px 0 18px">
+    <div class="q f" data-f="1"><span class="qn">Q1</span><span class="zh">可持续性要覆盖<b class="c-amber">多大范围</b>？</span></div>
+    <div class="q f" data-f="1"><span class="qn">Q2</span><span class="zh">虚拟环境能避免<b class="c-amber">哪些现实代价</b>？</span></div>
+    <div style="margin-left:auto" class="row">
+      <button class="btn" id="tts-all">🔊 朗读全文</button>
+      <button class="btn" id="tts-stop">⏹</button>
+      <label class="note">语速 <input type="range" id="tts-rate" min="0.6" max="1.2" step="0.05" value="0.9" style="width:110px"></label>
+    </div>
+  </div>
+  <div class="card" style="padding:28px 36px">
+    <div class="para" id="para7"></div>
+  </div>
+  <div class="note" style="margin-top:14px">💡 点击任意一句可单独朗读；鼠标悬停 <span style="border-bottom:2px dotted var(--amber)">虚线词</span> 查看释义（不用全懂，先读个大意）。</div>
+</section>
+
+<!-- ============ 04 TERMS: CNC & CMM ============ -->
+<section class="slide" data-title="专业术语①：CNC 加工，CMM 测量" id="s-cnc">
+  <h2><span class="no">02</span>专业术语①：CNC 负责「做」，CMM 负责「查」</h2>
+  <div style="display:grid;grid-template-columns:470px 1fr;gap:26px;margin-top:14px">
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div style="font-size:30px;font-weight:800"><span class="c-cyan">CNC</span> <span class="muted" style="font-size:20px">Computer Numerical Control</span></div>
+        <p class="zh" style="font-size:19px">计算机<b>数控</b>。文中 <b>CNCs</b> = CNC machines，<b class="c-cyan">数控机床</b>。<br>把图纸变成一串数字指令（G 代码），机器照着「切」。</p>
+      </div>
+      <div class="card" style="margin-bottom:14px">
+        <div style="font-size:30px;font-weight:800"><span class="c-amber">CMM</span> <span class="muted" style="font-size:20px">Coordinate Measuring Machine</span></div>
+        <p class="zh" style="font-size:19px"><b class="c-amber">三坐标测量机</b>。用探针去「摸」零件，读出 X / Y / Z 坐标，判断尺寸<b>合不合格</b>。</p>
+      </div>
+      <div class="card">
+        <div style="font-size:30px;font-weight:800"><span class="c-pink">Simulator</span> <span class="muted" style="font-size:20px">模拟器</span></div>
+        <p class="zh" style="font-size:19px">把机床、测量机和整个加工过程<b>搬进电脑</b>：<br>先在虚拟里「做 → 查 → 改」，确认无误再上真机。</p>
+      </div>
+    </div>
+    <div>
+      <div class="row" style="align-items:flex-start;gap:16px">
+        <svg id="cnc-svg" viewBox="0 0 640 440" width="640" height="440" style="background:#FFFFFF;border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh1)">
+          <defs>
+            <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8E4DA"/><stop offset=".5" stop-color="#F7F5EF"/><stop offset="1" stop-color="#D6D1C4"/></linearGradient>
+            <pattern id="vgrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="rgba(190,95,60,.18)" stroke-width="1"/></pattern>
+          </defs>
+          <rect id="cnc-bgv" x="0" y="0" width="640" height="440" fill="url(#vgrid)" opacity="0"/>
+          <text id="cnc-modelabel" x="20" y="32" font-size="16" fill="#75726A" font-weight="700">REAL · 真实车间</text>
+          <rect x="70" y="150" width="40" height="140" rx="4" fill="#E4DFD3" id="clampL"/>
+          <rect x="530" y="150" width="40" height="140" rx="4" fill="#E4DFD3" id="clampR"/>
+          <rect id="stock" x="110" y="90" width="420" height="270" rx="6" fill="url(#metal)" stroke="#C7C0B0" stroke-width="1.5"/>
+          <path id="cut" d="" stroke="#8C867A" stroke-width="34" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <g id="marks"></g>
+          <g id="probe" opacity="0"><line x1="0" y1="0" x2="0" y2="-70" stroke="#9A6B1F" stroke-width="4"/><circle r="8" fill="#B4453A" stroke="#fff" stroke-width="2"/></g>
+          <g id="tool"><circle r="18" fill="#C7C0B0" stroke="#3D3D3A" stroke-width="3" opacity=".95"/><path d="M-10 0H10M0 -10V10" stroke="#3D3D3A" stroke-width="2.5"/><circle id="tool-z" r="24" fill="none" stroke="#9A6B1F" stroke-width="2" stroke-dasharray="4 4" opacity="0"/></g>
+          <rect id="flash" x="0" y="0" width="640" height="440" fill="#B4453A" opacity="0" pointer-events="none"/>
+          <text id="crash-text" x="320" y="410" text-anchor="middle" font-size="20" font-weight="800" fill="#fff" opacity="0"></text>
+        </svg>
+        <div class="card" style="width:270px;height:440px;padding:14px 16px;overflow:hidden">
+          <div class="note" id="panel-title" style="margin-bottom:8px">G 代码（数控程序）</div>
+          <div id="gcode" class="mono" style="font-size:14.5px;line-height:1.75"></div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:14px;gap:10px;flex-wrap:wrap">
+        <button class="btn" id="cnc-mode">🔁 切换：现实 / 虚拟</button>
+        <button class="btn primary" id="cnc-run">▶ CNC 加工</button>
+        <button class="btn" id="cmm-run">📏 CMM 测量</button>
+        <button class="btn warn" id="cnc-crash">💥 运行一个错误程序</button>
+        <button class="btn" id="cnc-reset">⟲ 重置</button>
+      </div>
+      <div class="card" style="margin-top:12px;padding:12px 18px;display:flex;gap:30px;align-items:center" id="cost">
+        <span class="note">本次试错的代价 →</span>
+        <span>🧱 材料浪费 <b id="c-mat" class="c-amber">¥0</b></span>
+        <span>⏱ 停机时间 <b id="c-down" class="c-amber">0 h</b></span>
+        <span>⚙ 设备损坏 <b id="c-dmg" class="c-amber">¥0</b></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 TERMS: twin & value chain ============ -->
+<section class="slide" data-title="专业术语②：模拟、数字孪生与价值链" id="s-twin">
+  <h2><span class="no">02</span>专业术语②：模拟 ≠ 数字孪生</h2>
+  <div style="display:grid;grid-template-columns:900px 1fr;gap:24px;margin-top:6px">
+    <div>
+      <svg id="twin-svg" viewBox="0 0 900 380" width="900" height="380" style="background:#FFFFFF;border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh1)"></svg>
+      <div class="row" style="margin-top:10px">
+        <button class="btn on" id="tw-sim">Simulation 模拟</button>
+        <button class="btn" id="tw-twin">Digital Twin 数字孪生</button>
+        <button class="btn warn" id="tw-fault">🔥 现实中设备过热</button>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <h3 class="c-pink">simulation 模拟 / 仿真</h3>
+        <p style="font-size:18px">「如果……会怎样？」<br>输入假设 → 在虚拟模型里跑一遍 → 看结果。<br><span class="muted">可以和真实设备没有实时连接。</span></p>
+      </div>
+      <div class="card">
+        <h3 class="c-cyan">digital twin 数字孪生</h3>
+        <p style="font-size:18px">真实设备的「双胞胎」：<br>传感器数据<b>持续</b>流入 → 虚拟模型<b>同步更新</b> → 反过来给出预警与优化建议。</p>
+        <p class="muted" style="font-size:16px;margin-top:6px">一句话：数字孪生 = 会跟着真身一起「长大」的模拟。</p>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:16px">
+    <div class="row" style="gap:10px;align-items:stretch" id="vchain-mini">
+      <div class="note" style="width:120px;align-self:center"><b class="c-amber" style="font-size:20px">value chain</b><br>价值链</div>
+    </div>
+    <div class="note" style="margin-top:8px">value chain：每一环都在<b class="c-green">创造价值</b>（也产生成本与环境影响）｜ life cycle 生命周期：产品从「生」到「死」的过程。本段的 <i>from raw material extraction to end-of-life disposal</i> 就是沿着这条链走一遍。</div>
+  </div>
+</section>
+
+<!-- ============ 06 VOCAB attain / sustainability / genuine ============ -->
+<section class="slide" data-title="核心词汇①：attain / sustainability / genuine" id="s-v1">
+  <h2><span class="no">03</span>核心词汇① 目标：<span class="c-cyan">attain</span> genuine <span class="c-cyan">sustainability</span></h2>
+  <div class="grid3" style="margin-top:8px;grid-template-columns:1fr 1.15fr .95fr">
+    <div class="card">
+      <div class="word">attain <span class="lvl">CET-6</span></div>
+      <div class="ipa">/əˈteɪn/ v.</div>
+      <div class="morph"><div class="m" data-tip="at- = ad- 到、朝向">at<small>朝向</small></div><div class="m" data-tip="tain ← tangere 触碰（tangent 切线, tangible 可触的）">tain<small>触碰</small></div></div>
+      <div class="mean">「伸手<b>够到</b>」→ <b>达到、实现</b>（经过努力）</div>
+      <div class="note" style="margin:6px 0">attain a goal / a level / success</div>
+      <div class="ex">The model attained 92% accuracy on the test set.<span class="hint">点我</span><span class="tr">该模型在测试集上达到了 92% 的准确率。</span></div>
+      <div class="ex">Few students attain fluency without daily practice.<span class="tr">不每天练习，很少有学生能达到流利的程度。</span></div>
+    </div>
+    <div class="card">
+      <div class="word" style="font-size:46px">sustainability <span class="lvl">CET-6</span></div>
+      <div class="ipa">/səˌsteɪnəˈbɪləti/ n.</div>
+      <div id="sus-ladder" style="margin:12px 0"></div>
+      <button class="btn" id="sus-next" style="font-size:15px">▶ 词族生长</button>
+      <div class="mean" style="margin-top:8px">sus-(下面)+tain(握住) → 从下面<b>托住</b><br>→ 维持 → <b>可持续性</b></div>
+      <div class="ex">The machine sustained serious damage in the crash. <span class="lvl fun">僻义</span><span class="tr">sustain = 遭受（损失、伤害）：这台机器在碰撞中严重受损。</span></div>
+    </div>
+    <div class="card">
+      <div class="word" style="font-size:46px">genuine <span class="lvl c4">CET-4</span></div>
+      <div class="ipa">/ˈdʒenjuɪn/ adj.</div>
+      <div class="mean" style="margin-top:10px"><b>真正的；真诚的</b><br>genuine leather 真皮<br>a genuine interest 真心的兴趣</div>
+      <div class="box-dash" style="margin-top:12px">
+        <div style="font-size:18px">genuine sustainability <span class="c-green">✔</span><br><span class="c-red">✘</span> <b class="c-pink">greenwashing</b> <span class="lvl fun">有趣词</span></div>
+        <div class="note" style="margin-top:4px">「漂绿」：只在宣传上装环保。作者用 genuine 暗示：只管生产环节的环保是「表面功夫」。</div>
+      </div>
+    </div>
+  </div>
+  <div class="grid2" style="margin-top:12px;grid-template-columns:1.25fr 1fr">
+    <div class="card f" data-f="1">
+      <h3>🧩 词源小陷阱：同一个 <span class="tok" style="font-size:20px"><span class="pc">tain</span></span> 同一个来源吗？</h3>
+      <div style="font-size:19px;line-height:1.8">
+        <span class="chip">con·tain</span><span class="chip">main·tain</span><span class="chip">ob·tain</span><span class="chip">re·tain</span><span class="chip">sus·tain</span> ← <b class="c-cyan">tenere 握住 ✋</b><br>
+        <span class="chip" style="border-color:var(--amber);color:var(--amber)">at·tain</span> ← <b class="c-amber">tangere 触碰 👆</b>（和 tangent、tangible 是亲戚）
+      </div>
+      <p class="note" style="margin-top:6px">长得一样的片段不一定同源 —— 拆词之后，还要结合<b>词源与语境</b>来理解。</p>
+    </div>
+    <div class="card quiz f" data-f="2">
+      <h3>✍ 选一选：attain 还是 obtain？</h3>
+      <div style="font-size:19px">① She finally ____ her goal of becoming a geologist.<br>
+        <button class="btn opt" data-ok="1">attained</button><button class="btn opt">obtained</button></div>
+      <div style="font-size:19px;margin-top:8px">② We must ____ permission before sampling in the reserve.<br>
+        <button class="btn opt">attain</button><button class="btn opt" data-ok="1">obtain</button></div>
+      <div class="note" style="margin-top:6px">attain = 努力<b>达到</b>（目标、水平）；obtain = <b>获得</b>（信息、许可、样品）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 VOCAB transcend / encompass ============ -->
+<section class="slide" data-title="核心词汇②：transcend / encompass" id="s-v2">
+  <h2><span class="no">03</span>核心词汇② 范围：<span class="c-pink">transcend</span> 往外跨，<span class="c-cyan">encompass</span> 全圈住</h2>
+  <svg id="vc-svg" viewBox="0 0 1456 300" width="1456" height="300" style="margin-top:0"></svg>
+  <div class="grid2" style="margin-top:6px">
+    <div class="card">
+      <div class="row"><div class="word" style="font-size:46px">transcend</div><span class="lvl">CET-6</span><span class="ipa">/trænˈsend/ v.</span></div>
+      <div class="morph"><div class="m" data-tip="trans- 跨越、穿过（transport, transform）">trans<small>跨越</small></div><div class="m" data-tip="scend ← scandere 攀爬（ascend 上升, descend 下降）">(s)cend<small>攀爬</small></div></div>
+      <div class="mean">「翻越过去」→ <b>超出、超越</b>（某种界限）</div>
+      <div class="ex">The problem transcends disciplinary boundaries.<span class="hint">点我</span><span class="tr">这个问题超越了学科界限。</span></div>
+      <div class="ex">Her performance transcended all expectations. <span class="lvl fun">胜过</span><span class="tr">她的表现远远超出了所有人的预期。</span></div>
+      <div class="ex">π is a transcendental number. <span class="lvl fun">彩蛋</span><span class="tr">π 是一个「超越数」——数学里也有 transcend！</span></div>
+    </div>
+    <div class="card">
+      <div class="row"><div class="word" style="font-size:46px">encompass</div><span class="lvl">CET-6</span><span class="ipa">/ɪnˈkʌmpəs/ v.</span></div>
+      <div class="morph"><div class="m" data-tip="en- 使…在里面">en<small>使在内</small></div><div class="m" data-tip="compass 圆规；范围（也是「指南针」）">compass<small>圆规·范围</small></div></div>
+      <div class="mean">「用圆规画个圈，把它围进来」→ <b>包含、涵盖</b></div>
+      <div class="ex">Our study encompasses geology, geochemistry and machine learning.<span class="tr">我们的研究涵盖地质学、地球化学和机器学习。</span></div>
+      <div class="ex">The approach encompasses the entire value chain.<span class="tr">这种方法涵盖了整个价值链。（课文原句改写）</span></div>
+      <div class="note" style="margin-top:6px">分工：第1句 <b class="c-pink">transcending</b> 生产环节（往外走）→ 第2句 <b class="c-cyan">encompasses</b> 整条价值链（全部圈进来）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 VOCAB extraction / disposal ============ -->
+<section class="slide" data-title="核心词汇③：extraction / disposal" id="s-v3">
+  <h2><span class="no">03</span>核心词汇③ 起点与终点：<span class="c-amber">extraction</span> → <span class="c-green">disposal</span></h2>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card">
+      <div class="row"><div class="word" style="font-size:46px">extraction</div><span class="lvl">CET-6</span><span class="ipa">/ɪkˈstrækʃn/ n.</span></div>
+      <div class="morph"><div class="m" data-tip="ex- 向外">ex<small>向外</small></div><div class="m" data-tip="tract 拉、拖（tractor 拖拉机）">tract<small>拉</small></div><div class="m" data-tip="-ion 名词后缀">ion<small>名词</small></div></div>
+      <div class="mean">「往外<b>拉</b>出来」→ 开采、提取、拔除</div>
+      <div class="row" style="gap:8px;margin:10px 0" id="ext-tabs">
+        <button class="btn on" data-k="0">⛏ 矿产</button><button class="btn" data-k="1">🧠 AI</button><button class="btn" data-k="2">🏠 生活</button><button class="btn" data-k="3">🌿 extract n.</button>
+      </div>
+      <div class="box-dash" id="ext-box" style="min-height:92px;font-size:20px"></div>
+      <div class="note" style="margin-top:10px">同根词：<span class="chip">tractor 拖拉机</span><span class="chip">attract 吸引</span><span class="chip">distract 分心</span><span class="chip">abstract 抽象</span><span class="chip">contract 合同</span></div>
+    </div>
+    <div class="card">
+      <div class="row"><div class="word" style="font-size:46px">disposal</div><span class="lvl">CET-6</span><span class="ipa">/dɪˈspəʊzl/ n.</span></div>
+      <div class="morph"><div class="m" data-tip="dis- 分开、离开">dis<small>分开</small></div><div class="m" data-tip="pos 放置（position, deposit 沉积/矿床!）">pos<small>放</small></div><div class="m" data-tip="-al 名词后缀">al<small>名词</small></div></div>
+      <div class="mean">「放到一边去」→ <b>处置、处理</b></div>
+      <div class="note" style="margin:4px 0 6px">waste disposal 废物处理 · end-of-life disposal 报废处置 · dispose <b class="c-red">of</b> sth · disposable 一次性的</div>
+      <div class="ex">All the drill-core data are <b>at your disposal</b>. <span class="lvl fun">僻义</span><span class="tr">at sb's disposal = 供某人随意使用：所有岩芯数据任你使用。</span></div>
+      <div class="ex">Man proposes, God disposes. <span class="lvl fun">谚语</span><span class="tr">谋事在人，成事在天。（dispose = 决定、安排）</span></div>
+      <div class="note">😉 矿床 = ore <b>de·pos·it</b>：同一个 pos「放」——大自然把矿「放下」了。</div>
+    </div>
+  </div>
+  <div class="card glow f" data-f="1" style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center">
+    <div><b class="c-amber">矿产的 extraction</b><br><span style="font-size:19px">岩石 ⛰ → 矿石 → 精矿 → <b>金属</b><br>从石头里把<b>有价值的物质</b>拉出来</span></div>
+    <div><b class="c-cyan">AI 的 feature extraction</b><br><span style="font-size:19px">遥感 / 化探数据 📊 → <b>特征</b> → 成矿预测<br>从数据里把<b>有价值的信息</b>拉出来 —— xAI 再追问：<i>这些特征地质学家看得懂吗？</i></span></div>
+  </div>
+</section>
+
+<!-- ============ 09 VOCAB optimize / simulate ============ -->
+<section class="slide" data-title="核心词汇④：optimize / simulate / performance / downtime" id="s-v4">
+  <h2><span class="no">03</span>核心词汇④ 方法：<span class="c-cyan">optimize</span> · <span class="c-pink">simulate</span></h2>
+  <div class="grid2" style="margin-top:12px;gap:18px">
+    <div class="card">
+      <div class="row"><div class="word" style="font-size:44px">optimize</div><span class="lvl">CET-6</span><span class="ipa">/ˈɒptɪmaɪz/ v.</span></div>
+      <div class="morph"><div class="m" data-tip="optimus 拉丁语「最好的」（Optimus Prime 擎天柱！）">optim<small>最好的</small></div><div class="m" data-tip="-ize 使……化">ize<small>使…</small></div></div>
+      <div class="mean">「使……达到最好」→ <b>优化</b>；optimum 最佳值 · optimal 最优的 · optimization 优化</div>
+      <div class="box-dash" style="margin-top:8px;font-size:19px">⚠ 说「优化」之前必须先问：<b class="c-amber">优化什么？</b><br>课文答案：optimizing <b class="c-cyan">sustainability performance</b><br><span class="note">（伏笔：AI 里叫「目标函数 / 损失函数」）</span></div>
+    </div>
+    <div class="card">
+      <div class="row"><div class="word" style="font-size:44px" id="simword">simulate</div><span class="lvl">CET-6</span><span class="ipa">/ˈsɪmjuleɪt/ v.</span></div>
+      <div class="row" style="gap:8px;margin:8px 0">
+        <button class="btn sfx on" data-s="0">-ate 动作</button><button class="btn sfx" data-s="1">-ation 过程</button><button class="btn sfx" data-s="2">-ator 工具</button>
+      </div>
+      <div id="sfx-out" style="font-size:19px;min-height:56px"></div>
+      <div class="box-dash" style="font-size:18px;margin-top:6px">
+        <b>simulate</b> 模拟（similis 相似）<span class="c-red">vs</span> <b>s<span class="c-red" style="font-size:24px">t</span>imulate</b> 刺激（stimulus 刺棒）<br>
+        <span class="ex" style="display:block;margin:6px 0 0;border-left-color:var(--pink)">He simulated interest in the lecture. <span class="lvl fun">僻义</span><span class="tr">simulate = 假装：他假装对讲座很感兴趣。（希望大家不是 🙃）</span></span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row"><div class="word" style="font-size:40px">performance</div><span class="lvl c4">CET-4</span></div>
+      <div class="mean">表演 🎭 →（东西「表演」得怎么样）→ <b>表现、性能、成效</b></div>
+      <div style="font-size:18px;margin-top:6px"><span class="chip">sustainability performance 可持续性表现</span><span class="chip">engine performance 发动机性能</span><span class="chip">model performance 模型性能</span></div>
+    </div>
+    <div class="card">
+      <div class="row"><div class="word" style="font-size:40px">downtime</div><span class="lvl fun">专业词</span></div>
+      <div class="mean"><b>停机时间</b>：机器不能工作的时间（machine downtime）<br><span class="muted" style="font-size:18px">口语：放空、休息的时间 —— <i>I need some downtime after the exam.</i></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 QUIZ ============ -->
+<section class="slide" data-title="词汇小检验" id="s-quiz">
+  <h2><span class="no">03</span>词汇小检验：把课文词汇用起来</h2>
+  <div class="grid2" style="margin-top:20px">
+    <div class="card">
+      <div class="pill">汉 → 英</div>
+      <div class="big-q zh" style="margin:18px 0">该方法涵盖整个价值链。</div>
+      <button class="btn" data-reveal="qa1">显示答案</button>
+      <div class="reveal" id="qa1" style="font-size:26px;margin-top:14px;font-family:var(--en)">The approach <b class="c-cyan">encompasses</b> the entire value chain.</div>
+    </div>
+    <div class="card">
+      <div class="pill">英 → 汉</div>
+      <div class="big-q" style="margin:18px 0">We simulate the process to optimize its performance.</div>
+      <button class="btn" data-reveal="qa2">显示答案</button>
+      <div class="reveal" id="qa2" style="font-size:26px;margin-top:14px">我们<b class="c-pink">模拟</b>这一过程，以<b class="c-cyan">优化</b>其<b class="c-amber">性能</b>。</div>
+    </div>
+  </div>
+  <div class="card quiz f" data-f="1" style="margin-top:22px">
+    <h3>⚡ 抢答：一眼选对</h3>
+    <div class="grid2" style="gap:10px 30px;font-size:20px">
+      <div>① The problem ____ disciplinary boundaries.<br><button class="btn opt" data-ok="1">transcends</button><button class="btn opt">encompasses</button></div>
+      <div>② Please ____ of used batteries properly.<br><button class="btn opt" data-ok="1">dispose</button><button class="btn opt">disposal</button></div>
+      <div>③ Coffee can ____ the nervous system.<br><button class="btn opt">simulate</button><button class="btn opt" data-ok="1">stimulate</button></div>
+      <div>④ The drill rig ____ serious damage.<br><button class="btn opt" data-ok="1">sustained</button><button class="btn opt">attained</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11-16 SENTENCES ============ -->
+<section class="slide" data-title="第1句：目的是什么，主张是什么？" data-sent="1" data-steps="4">
+  <h2><span class="no">04</span>S1 · 目的是什么，主张是什么？<span class="tag">目的 → 主干 → 修饰</span></h2>
+  <div class="legend"></div>
+  <div class="sent"></div>
+  <div class="sbottom"></div>
+</section>
+<section class="slide" data-title="第2句：什么样的方法？" data-sent="2" data-steps="4">
+  <h2><span class="no">04</span>S2 · 什么样的方法？<span class="tag">定语从句</span></h2>
+  <div class="legend"></div>
+  <div class="sent"></div>
+  <div class="sbottom"></div>
+</section>
+<section class="slide" data-title="第3句：数字孪生在哪些环节发挥作用？" data-sent="3" data-steps="4">
+  <h2><span class="no">04</span>S3 · 数字孪生在哪些环节发挥作用？<span class="tag">长句拆解 ★</span></h2>
+  <div class="legend"></div>
+  <div class="sent"></div>
+  <div class="sbottom"></div>
+</section>
+<section class="slide" data-title="第4句：一个例子里，套了哪些结构？" data-sent="4" data-steps="4">
+  <h2><span class="no">04</span>S4 · 一个例子里，套了哪些结构？<span class="tag">-ing 后置修饰 + 宾语从句</span></h2>
+  <div class="legend"></div>
+  <div class="sent"></div>
+  <div class="sbottom"></div>
+</section>
+<section class="slide" data-title="第5句：为什么说 has been developed？" data-sent="5" data-steps="4">
+  <h2><span class="no">04</span>S5 · 为什么说 has been developed？<span class="tag">现在完成时被动</span></h2>
+  <div class="legend"></div>
+  <div class="sent"></div>
+  <div class="sbottom"></div>
+</section>
+<section class="slide" data-title="第6句：虚拟环境减少了什么代价？" data-sent="6" data-steps="4">
+  <h2><span class="no">04</span>S6 · 虚拟环境减少了什么代价？<span class="tag">指代 + 三个并列宾语</span></h2>
+  <div class="legend"></div>
+  <div class="sent"></div>
+  <div class="sbottom"></div>
+</section>
+
+<!-- ============ 17 MAP ============ -->
+<section class="slide" data-title="段落地图：把六句话重新连起来" id="s-map">
+  <h2><span class="no">04</span>段落地图：把六句话重新连起来</h2>
+  <div class="sub">原则 → 技术 → 例子 → 收益</div>
+  <svg id="map-svg" viewBox="0 0 1456 380" width="1456" height="380"></svg>
+  <div class="grid2 f" data-f="5" style="margin-top:6px">
+    <div class="card"><div class="q"><span class="qn">Q1</span><span class="zh">范围多大？—— <b class="c-cyan">整条价值链</b>：from raw material extraction to end-of-life disposal，「超出生产」。</span></div></div>
+    <div class="card"><div class="q"><span class="qn">Q2</span><span class="zh">避免哪些代价？—— <b class="c-amber">material waste · machine downtime · risk of damage</b>（材料、时间、设备）。</span></div></div>
+  </div>
+</section>
+
+<!-- ============ 18 LLM ============ -->
+<section class="slide" data-title="从我们的阅读，到模型的语言处理" id="s-llm">
+  <h2><span class="no">05</span>揭晓：我们刚才的读法 ≈ 大模型的读法</h2>
+  <div class="row" style="gap:10px;margin:10px 0 14px" id="llm-pipe"></div>
+  <div class="card" style="padding:18px 22px">
+    <div class="row" style="gap:12px"><span class="note" style="flex:none">输入任意英文 ⟶</span><input type="text" id="llm-in" value="Digital twin technology plays a crucial role in optimizing sustainability performance."><button class="btn primary" id="llm-go" style="flex:none">Tokenize</button></div>
+    <div id="llm-toks" style="margin-top:6px;padding:24px 4px;display:flex;flex-wrap:wrap;align-items:flex-start;align-content:flex-start;row-gap:50px;min-height:100px;max-height:220px;overflow-y:auto"></div>
+    <div id="llm-sum" class="mono" style="margin-top:34px;font-size:17px;color:var(--muted);min-height:50px"></div>
+  </div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="card f" data-f="1"><b class="c-cyan">Tokenizer</b>：先把文本切成 token，每个片段对应一个编号。<br><b class="c-amber">Attention</b>：点击一个片段作为 Query，每个 token ID 都会单独获得一个权重，再「加权求和」得到新表示 —— 就像我们找「谁和谁有关系」。</div>
+    <div class="card f" data-f="2" style="border-color:rgba(180,69,58,.5)"><b class="c-red">⚠ 边界</b>：这里是教学用的「伪」tokenizer 和示意权重。真实 token 不一定是完整的词或词根（按频率切）；模型关注的关系也远不止语法，而且是从海量数据中<b>学</b>出来的。</div>
+  </div>
+</section>
+
+<!-- ============ 19 GD ============ -->
+<section class="slide" data-title="optimize 到底在做什么：损失与梯度下降" id="s-gd">
+  <h2><span class="no">05</span>optimize 到底在做什么？—— 蒙着眼睛下山</h2>
+  <div style="display:grid;grid-template-columns:820px 1fr;gap:26px;margin-top:14px">
+    <div>
+      <canvas id="gd-cv" width="820" height="470" style="background:#F4F1E9;border:1px solid var(--line);border-radius:14px;cursor:crosshair"></canvas>
+      <div class="row" style="margin-top:12px;gap:10px">
+        <button class="btn primary" id="gd-step">👣 走一步</button>
+        <button class="btn" id="gd-auto">▶ 自动下山</button>
+        <button class="btn" id="gd-reset">⟲ 换个起点</button>
+        <label class="note">学习率 η <input type="range" id="gd-lr" min="0.01" max="0.6" step="0.01" value="0.08"> <b id="gd-lrv" class="c-amber">0.08</b></label>
+      </div>
+      <div class="note" style="margin-top:6px">提示：在曲线上点击可以放置起点；试试把学习率拉到很大 😈</div>
+    </div>
+    <div>
+      <div class="card f" data-f="1" style="margin-bottom:12px"><b class="c-red">损失 Loss</b>：离目标还差多少（山的高度）</div>
+      <div class="card f" data-f="2" style="margin-bottom:12px"><b class="c-amber">梯度 Gradient</b>：脚下哪个方向最陡（坡度）<br><span class="mono" style="font-size:18px">w ← w − η · ∂L/∂w</span></div>
+      <div class="card f" data-f="3" style="margin-bottom:12px"><b class="c-cyan">学习率 η</b>：每一步迈多大<br><span class="note">太小：走得慢；太大：在山谷两边来回蹦</span></div>
+      <div class="card glow f" data-f="4"><b>回到课文</b>：optimizing sustainability performance<br>
+        <span class="mono" style="font-size:17px;line-height:1.8">L = 材料浪费 + 停机时间<br>&nbsp;&nbsp;&nbsp;&nbsp;+ 设备损坏风险 + 能耗 …</span><br><span class="note">优化 = 让这个 L 一步步变小。但如果没有现成的「L」可以求导呢？→ 下一页</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 20 RL ============ -->
+<section class="slide" data-title="微型实验：找矿机器人如何通过梯度学习？" id="s-rl">
+  <h2><span class="no">05</span>微型实验：找矿机器人在「数字孪生」里学找矿</h2>
+  <div class="row" style="gap:12px;margin:2px 0 10px;font-size:17px">
+    <span class="pill" style="color:var(--cyan);border-color:var(--cyan)">状态 State：所在格子</span>
+    <span class="pill" style="color:var(--amber);border-color:var(--amber)">动作 Action：↑ → ↓ ←</span>
+    <span class="pill" style="color:var(--green);border-color:var(--green)">奖励 Reward：由你设计 ↓</span>
+    <span class="pill">算法：REINFORCE 策略梯度（真实训练，非动画）</span>
+  </div>
+  <div style="display:grid;grid-template-columns:640px 1fr;gap:22px">
+    <div>
+      <canvas id="rl-cv" width="640" height="448" style="border-radius:14px;border:1px solid var(--line)"></canvas>
+      <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap">
+        <button class="btn primary" id="rl-train">▶ 开始训练</button>
+        <button class="btn" id="rl-watch">👀 看它走一回合</button>
+        <button class="btn" id="rl-explain">🔍 解析一次更新</button>
+        <button class="btn" id="rl-reset">⟲ 重置大脑</button>
+        <label class="note">速度 <input type="range" id="rl-speed" min="1" max="40" value="8" style="width:100px"></label>
+      </div>
+    </div>
+    <div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px" id="rl-modes">
+        <button class="btn mode-btn" data-m="1">① 只奖励「走得远」<small>离起点越远，奖励越多</small></button>
+        <button class="btn mode-btn on" data-m="2">② 只奖励「找到矿」<small>找到矿 +10（附化探异常线索）</small></button>
+        <button class="btn mode-btn" data-m="3">③ 找到矿 + 动作代价<small>每步 −0.05，进保护区 −1</small></button>
+      </div>
+      <div class="row" style="gap:20px;margin:6px 0 8px">
+        <div class="stat">回合数<b id="st-ep">0</b></div>
+        <div class="stat">平均回报<b id="st-ret">–</b></div>
+        <div class="stat">找到矿率<b id="st-found">–</b></div>
+        <div class="stat">平均步数<b id="st-steps">–</b></div>
+        <div class="stat">闯保护区<b id="st-res">–</b></div>
+      </div>
+      <canvas id="rl-chart" width="770" height="150" style="background:#F4F1E9;border:1px solid var(--line);border-radius:10px"></canvas>
+      <div class="card" id="rl-info" style="margin-top:10px;min-height:178px;font-size:17px;line-height:1.6;padding:14px 18px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 21 SUMMARY ============ -->
+<section class="slide" data-title="回到课文：用一句话带走这一段" id="s-sum">
+  <h2>回到课文：用一句话带走这一段</h2>
+  <div class="grid3" style="margin-top:22px">
+    <div class="card f" data-f="1"><div style="font-size:40px">🔗</div><h3 class="c-cyan">范围</h3><p>覆盖<b>整条价值链</b><br><span class="muted">transcend 生产，encompass 全链</span></p></div>
+    <div class="card f" data-f="2"><div style="font-size:40px">🖥</div><h3 class="c-pink">方法</h3><p>利用<b>虚拟模拟</b><br><span class="muted">digital twin · simulator</span></p></div>
+    <div class="card f" data-f="3"><div style="font-size:40px">🌱</div><h3 class="c-green">收益</h3><p>减少<b>真实试错代价</b><br><span class="muted">waste · downtime · risk</span></p></div>
+  </div>
+  <div class="card glow f" data-f="4" style="margin-top:26px;text-align:center;padding:30px">
+    <div id="sum-sent" style="display:flex;flex-wrap:wrap;justify-content:center;row-gap:40px"></div>
+    <div class="zh muted" style="font-size:22px;margin-top:34px">在实物试验之前先模拟过程，我们就能优化性能，并减少浪费与风险。</div>
+  </div>
+  <div class="f" data-f="5" style="text-align:center;margin-top:26px;font-size:26px" class="zh">
+    还记得开头的问题吗？刚才的机器人在虚拟世界里犯了<b class="c-amber" id="sum-err">几百</b>次错 —— 现实中，<b class="c-green">一次也没有</b>。🤖
+  </div>
+</section>
+
+<!-- ============ 22 APPENDIX ============ -->
+<section class="slide" data-title="附录：课后练习" id="s-app">
+  <h2>附录：课后小练习 <span class="tag">点击空格显示答案</span></h2>
+  <div class="grid2" style="margin-top:16px">
+    <div class="card">
+      <h3>一、用课文词汇填空</h3>
+      <ol style="padding-left:26px">
+        <li>The new policy aims to ______ carbon neutrality by 2060. <span class="chip blank" data-a="attain">?</span></li>
+        <li>Climate change ______ national borders. <span class="chip blank" data-a="transcends">?</span></li>
+        <li>The survey ______ both field mapping and remote sensing. <span class="chip blank" data-a="encompasses">?</span></li>
+        <li>Rare earth ______ often produces toxic waste. <span class="chip blank" data-a="extraction">?</span></li>
+        <li>Tailings ______ is a major issue for mines. <span class="chip blank" data-a="disposal">?</span></li>
+        <li>Engineers ______ the crash before building the car. <span class="chip blank" data-a="simulate">?</span></li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>二、翻译</h3>
+      <div class="ex">1. 这项技术在减少材料浪费方面起着关键作用。<span class="hint">点我</span><span class="tr">This technology plays a crucial role in reducing material waste.</span></div>
+      <div class="ex">2. 已经开发出了用于模拟钻探过程的软件。<span class="tr">Software has been developed for simulating the drilling process.</span></div>
+      <div class="ex">3. The model provides a virtual environment that eliminates the risk of damage to expensive equipment.<span class="tr">该模型提供了一个虚拟环境，消除了昂贵设备受损的风险。</span></div>
+      <h3 style="margin-top:16px">三、找结构</h3>
+      <div class="ex">本段中有两个「名词 + 现在分词」的后置修饰，你能找出来吗？<span class="tr">factors transcending… ／ an example demonstrating…</span></div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:26px;font-size:30px;font-weight:800">Thank you! · Q &amp; A</div>
+</section>
+
+</div></div>
+<div id="hud"><div id="bar"></div></div>
+<div id="ctrl"><button id="b-prev">◀</button><span id="counter">1/1</span><button id="b-next">▶</button><button id="b-menu">☰</button><button id="b-fs">⛶</button></div>
+<div id="menu"><div class="items"></div></div>
+<div id="help"><b>快捷键</b><br><kbd>→</kbd> <kbd>空格</kbd> <kbd>PgDn</kbd> 下一步 ｜ <kbd>←</kbd> <kbd>PgUp</kbd> 上一步<br><kbd>Shift</kbd>+<kbd>→/←</kbd> 直接跳页 ｜ <kbd>Home</kbd>/<kbd>End</kbd> 首页/末页<br><kbd>M</kbd> 目录 ｜ <kbd>F</kbd> 全屏 ｜ <kbd>I</kbd> 显示词块编号 ｜ <kbd>?</kbd> 关闭本帮助</div>
+
+<script>
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const stage=$('#stage'); let SCALE=1;
+const ROLE={pur:['目的状语','#7C5C9E'],sub:['主语','#BE5F3C'],pre:['谓语','#9A6B1F'],obj:['宾语 / 表语','#5F7A45'],mod:['修饰语','#B0557D'],cls:['从句','#3E6E9E'],adv:['状语','#8A6D1F'],p:['','#75726A']};
+function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return (h>>>0)}
+
+/* ================= SENTENCE DATA ================= */
+const SENTS={
+1:{fs:27,toks:'To/pur/to at·tain/pur/attain genu·ine/pur/genuine sustain·abil·ity/pur/sust ,/p | design·er·s/sub/des* must/pre/must* consider/pre/cons* various/obj/var factor·s/obj/fac* trans·cend·ing/mod/trans the/mod/the product/mod/prod produc·tion/mod/production ./p',
+ arcs:[['cons','des','谁考虑？主谓',1,'u'],['cons','fac','考虑什么？动宾',1,'u'],['trans','fac','什么样的因素？后置定语',.9,'d'],['attain','cons','为了什么？目的状语',.75],['attain','sust','动宾',.6,'u'],['genuine','sust','定语',.35,'u'],['trans','production','超出什么',.6,'d'],['must','cons','情态',.4,'d'],['var','fac','',.3,'u']],
+ skel:'<em>designers must consider</em> … <em>factors</em>',
+ zh:'为了实现<b>真正的</b>可持续性，设计者必须考虑<b>超出产品生产本身</b>的各种因素。',
+ notes:['<b class="c-violet">To do… 作目的状语</b><br>放在句首，先交代目的。翻译时顺序不变：「为了……，……」。',
+  '<b class="c-pink">现在分词后置定语</b><br>factors <u>transcending</u> the production<br>= factors <u>that transcend</u> the production<br><span class="muted">因素「超出」生产 → 主动关系，用 -ing</span>',
+  '<b>阅读顺序：目的 → 主干 → 修饰</b><br>先抓 designers must consider factors，再问：为了什么？什么样的 factors？<br><span class="muted">product production：名词作定语，「产品的生产」</span>']},
+2:{fs:28,toks:'They/sub/they* need/pre/need* to/pre/to* adopt/pre/adopt* a/obj/a* compre·hens·ive/obj/comp approach/obj/app* | that/cls/that en·compass·es/cls/enc the/cls/the entire/cls/ent value/cls/val chain/cls/chain ./p',
+ arcs:[['adopt','they','主谓',1,'u'],['need','adopt','need to do',.5,'d'],['adopt','app','动宾',1,'u'],['comp','app','定语',.5,'d'],['that','app','that 指代谁？先行词',.95],['enc','that','主谓',.7,'u'],['enc','chain','涵盖什么',1,'u'],['ent','chain','定语',.4,'d'],['val','chain','名词作定语',.35,'d']],
+ skel:'<em>They need to adopt a</em> … <em>approach</em>',
+ zh:'他们需要采用一种<b>涵盖整个价值链</b>的综合方法。',
+ notes:['<b class="c-cyan">They = designers</b><br>代词要回到上一句找「指代对象」——把两句话的意思连起来。',
+  '<b>adopt an approach</b> 采用一种方法<br>同类搭配：take / develop an approach<br><span class="muted">approach <b>to</b> sth：解决某事的方法（to 是介词）</span>',
+  '<b class="c-blue">that 引导定语从句</b>，修饰 approach<br>that 在从句中作<b>主语</b>，不能省略。<br>从句恰好解释了 comprehensive：「全面」全在哪？→ 整条价值链。']},
+3:{fs:23,toks:'Digital/sub/dig twin/sub/twin techno·logy/sub/tech* play·s/pre/plays* a/obj/a* crucial/obj/cru role/obj/role* in/mod/in optim·iz·ing/mod/opt sustain·abil·ity/mod/sus perform·ance/mod/perf | at/adv/at every/adv/every stage/adv/stage ,/p from/adv/from raw/adv/raw material/adv/mat ex·tract·ion/adv/ext to/adv/to2 end-of-life/adv/eol dis·pos·al/adv/disp ./p',
+ arcs:[['plays','tech','主谓',1,'u'],['plays','role','动宾',1,'u'],['twin','tech','',.35,'d'],['cru','role','定语',.4,'d'],['in','role','role in',.7,'d'],['opt','in','介词+动名词',.55,'u'],['opt','perf','优化什么？',1,'u'],['sus','perf','哪方面的表现',.5,'d'],['stage','opt','在哪个阶段？',.7],['from','stage','划定范围',.7,'u'],['ext','disp','起点 ↔ 终点',.8,'u'],['mat','ext','',.35,'d'],['eol','disp','',.45,'d']],
+ skel:'Digital twin <em>technology plays a crucial role</em> in …',
+ zh:'数字孪生技术在<b>优化每个阶段的可持续性表现</b>方面发挥着关键作用——从原材料开采一直到产品报废处置。',
+ notes:['<b>play a crucial role in (doing) sth</b><br>在……中起关键作用（crucial ≈ key / vital）<br><span class="muted">in 是介词 → 后接动名词 optimizing</span>',
+  '<b class="c-pink">名词堆叠</b> sustainability performance<br>= performance <i>in terms of</i> sustainability<br>英语爱把名词叠起来，中文要补出关系：「可持续性<b>方面的</b>表现」',
+  '<b class="c-yellow">at every stage, from A to B</b><br>from…to… 给 every stage 划定范围<br><b>end-of-life</b>：连字符复合形容词，「寿命终结的」→ 报废阶段<br><span class="muted">同类：state-of-the-art · real-world</span>']},
+4:{fs:22,toks:'The/sub/the* CNC/sub/cnc* (/p computer/mod/c1 numer·ical/mod/c2 control/mod/c3 )/p and/sub/and* CMM/sub/cmm* (/p co·ordin·ate/mod/m1 measur·ing/mod/m2 machine/mod/m3 )/p simul·ator/sub/sim* | is/pre/is* an/obj/an* example/obj/ex* demonstrat·ing/mod/demo how/cls/how intelligent/cls/int manufactur·ing/cls/man trans·form·s/cls/tf the/cls/the2 produc·tion/cls/prodn process/cls/proc ./p',
+ arcs:[['is','sim','主语是谁？',1],['is','ex','系表',1,'u'],['demo','ex','后置定语',.9,'u'],['how','demo','宾语从句',.8,'d'],['tf','man','主谓',.8,'u'],['tf','proc','动宾',.8,'u'],['cnc','sim','',.55,'u'],['cmm','sim','共同修饰 simulator',.55,'u'],['c3','cnc','全称',.4,'d'],['m3','cmm','全称',.4,'d']],
+ skel:'<em>The CNC and CMM simulator is an example</em> …',
+ zh:'CNC（计算机数控）与 CMM（三坐标测量机）模拟器就是一个例子，它<b>展示了智能制造如何改变生产过程</b>。',
+ notes:['<b>主干：The … simulator is an example.</b><br>括号里是缩写的全称（同位解释）；CNC and CMM 一起修饰 simulator：<b>一个</b>同时模拟两种机器的模拟器。',
+  '<b class="c-pink">demonstrating… 后置修饰 example</b><br>= an example <u>that demonstrates</u> …<br>🔁 对照第1句 factors <u>transcending</u>…：同一结构第二次出现！',
+  '<b class="c-blue">how 引导宾语从句</b>：作 demonstrating 的宾语<br>从句用<b>陈述语序</b>：<br>✔ how intelligent manufacturing transforms…<br>✘ how does intelligent manufacturing transform…']},
+5:{fs:27,toks:'Soft·ware/sub/sw* has/pre/has* been/pre/been* develop·ed/pre/dev* | for/adv/for simul·at·ing/adv/sim CNC·s/obj/cncs ,/p CMM·s/obj/cmms ,/p and/obj/and the/obj/the manufactur·ing/obj/man process·es/obj/proc ./p',
+ arcs:[['dev','sw','被开发的是什么？',1,'u'],['has','dev','现在完成',.5,'d'],['been','dev','被动',.5,'u'],['for','dev','用途',.7],['sim','for','介词+动名词',.5,'u'],['sim','cncs','模拟 ①',1,'d'],['sim','cmms','模拟 ②',.85,'d'],['sim','proc','模拟 ③',.85,'d'],['man','proc','',.35,'u']],
+ skel:'<em>Software has been developed</em> …',
+ zh:'目前已开发出<b>用于模拟</b>数控机床、三坐标测量机以及制造过程的软件。',
+ notes:['<b class="c-amber">has been developed</b> = has + been + done<br><b>现在完成时</b>：已经开发出来，<b>结果仍在</b>（软件现在就能用）<br><b>被动</b>：软件是被开发的对象',
+  '<b>为什么用被动？</b><br>谁开发的不重要，重点是「软件」。<br>中文少用「被」：译成「人们已开发出……」或「已有……软件」。',
+  '<b class="c-yellow">for doing 表用途</b>，后接三个并列宾语 A, B, and C<br><b>software 不可数</b>：a piece of software ✔ / softwares ✘<br><span class="muted">CNCs、CMMs 在这里指「机器」，所以可以加 s</span>']},
+6:{fs:21,toks:'It/sub/it* provide·s/pre/prov* a/obj/a* virtual/obj/virt environ·ment/obj/env* | that/cls/that elimin·ate·s/cls/elim material/cls/mat waste/cls/waste ,/p machine/cls/mach down·time/cls/dt ,/p or/cls/or the/cls/the risk/cls/risk of/cls/of damage/cls/dmg to/cls/to expens·ive/cls/expv equip·ment/cls/eq ./p',
+ arcs:[['prov','it','主谓',1,'u'],['prov','env','动宾',1,'u'],['virt','env','定语',.5,'d'],['that','env','先行词',.9],['elim','that','主谓',.7,'u'],['elim','waste','消除 ①',1,'u'],['elim','dt','消除 ②',.9,'u'],['elim','risk','消除 ③',.9,'u'],['mat','waste','',.3,'d'],['mach','dt','',.3,'d'],['dmg','risk','risk of',.6,'d'],['eq','dmg','damage to',.6,'d']],
+ skel:'<em>It provides a</em> … <em>environment</em>',
+ zh:'它提供了一个虚拟环境，可以<b>避免材料浪费、机器停机以及昂贵设备受损的风险</b>。',
+ notes:['<b class="c-cyan">It = Software</b>（回指上一句）<br><b class="c-blue">that eliminates…</b> 定语从句修饰 environment<br><span class="muted">or 在列举中 ≈「以及」</span>',
+  '<b>eliminate 的三个宾语</b><br>① material waste 材料浪费<br>② machine downtime 停机时间<br>③ the risk of damage <b>to</b> expensive equipment <span class="muted">（damage to sth，不是 of）</span>',
+  '<b class="c-red">🧐 批判性阅读</b><br>eliminate 语气很强。虚拟环境消除的是<b>「试错」阶段</b>的代价；真实加工仍会耗材，计算机也要耗电。<br>更严谨的说法：<i>greatly reduces</i>']}
+};
+
+/* ================= ENGINE ================= */
+const slides=$$('.slide'); let cur=0, step=0; const hooks={};
+function maxStep(sl){let m=+(sl.dataset.steps||0);$$('.f',sl).forEach(e=>m=Math.max(m,+e.dataset.f||0));return m}
+function hookOf(sl){return hooks[sl.id]||(sl.dataset.sent?sentHook:null)}
+function fit(){SCALE=Math.min(innerWidth/1600,innerHeight/900);stage.style.transform=`scale(${SCALE})`}
+addEventListener('resize',fit);
+function applyStep(){const sl=slides[cur];$$('.f',sl).forEach(e=>e.classList.toggle('on',(+e.dataset.f)<=step));const h=hookOf(sl);h&&h.step&&h.step(sl,step);
+  const m=maxStep(sl);$('#stepdots').innerHTML=m?Array.from({length:m},(_,i)=>`<i class="${i<step?'on':''}"></i>`).join(''):''}
+function go(i,s=0){if(i<0||i>=slides.length)return;const old=slides[cur];if(i!==cur){const h=hookOf(old);h&&h.leave&&h.leave(old);old.classList.remove('active')}
+  slides.forEach((x,k)=>x.classList.toggle('past',k<i));cur=i;const sl=slides[i];sl.classList.add('active');step=s==='end'?maxStep(sl):s;
+  const h=hookOf(sl);h&&h.enter&&h.enter(sl);applyStep();
+  $('#counter').textContent=`${i+1} / ${slides.length}`;$('#bar').style.width=((i+1)/slides.length*100)+'%';history.replaceState(null,'','#'+(i+1));hideGloss()}
+function next(){const m=maxStep(slides[cur]);if(step<m){step++;applyStep()}else go(cur+1,0)}
+function prev(){if(step>0){step--;applyStep()}else go(cur-1,'end')}
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'&&e.target.type==='text'){if(e.key==='Escape')e.target.blur();return}
+  const k=e.key;
+  if(k==='Escape'){$('#menu').classList.remove('show');$('#help').classList.remove('show');return}
+  if($('#menu').classList.contains('show')&&k!=='m'&&k!=='M')return;
+  if(e.shiftKey&&k==='ArrowRight'){go(cur+1,0);e.preventDefault();return}
+  if(e.shiftKey&&k==='ArrowLeft'){go(cur-1,0);e.preventDefault();return}
+  if(['ArrowRight',' ','PageDown','ArrowDown'].includes(k)){next();e.preventDefault()}
+  else if(['ArrowLeft','PageUp','ArrowUp','Backspace'].includes(k)){prev();e.preventDefault()}
+  else if(k==='Home')go(0,0);else if(k==='End')go(slides.length-1,0);
+  else if(k==='m'||k==='M')toggleMenu();else if(k==='f'||k==='F')toggleFS();
+  else if(k==='?'||k==='h'||k==='H')$('#help').classList.toggle('show');
+  else if(k==='i'||k==='I')$$('.sent').forEach(s=>s.classList.toggle('ids'));
+});
+function toggleFS(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+function toggleMenu(){const m=$('#menu');m.classList.toggle('show');if(m.classList.contains('show')){$('.items',m).innerHTML=slides.map((s,i)=>`<div class="it ${i===cur?'cur':''}" data-i="${i}"><span>${String(i+1).padStart(2,'0')}</span>${s.dataset.title||''}</div>`).join('')}}
+$('#menu').addEventListener('click',e=>{const it=e.target.closest('.it');if(it){go(+it.dataset.i,0)}$('#menu').classList.remove('show')});
+$('#b-next').onclick=next;$('#b-prev').onclick=prev;$('#b-menu').onclick=toggleMenu;$('#b-fs').onclick=toggleFS;$('#counter').onclick=toggleMenu;
+
+/* ================= GLOSS TOOLTIP ================= */
+const gloss=$('#gloss');
+function stagePt(e){const r=stage.getBoundingClientRect();return[(e.clientX-r.left)/SCALE,(e.clientY-r.top)/SCALE]}
+function showGloss(e,html){gloss.innerHTML=html;gloss.style.opacity=1;const[x,y]=stagePt(e);gloss.style.left=Math.min(x+14,1600-380)+'px';gloss.style.top=(y+22)+'px'}
+function hideGloss(){gloss.style.opacity=0}
+stage.addEventListener('mouseover',e=>{const t=e.target.closest('.w,[data-tip]');if(t)showGloss(e,t.dataset.g||t.dataset.tip)});
+stage.addEventListener('mousemove',e=>{if(gloss.style.opacity==='1'){const[x,y]=stagePt(e);gloss.style.left=Math.min(x+14,1600-380)+'px';gloss.style.top=(y+22)+'px'}});
+stage.addEventListener('mouseout',e=>{if(e.target.closest('.w,[data-tip]'))hideGloss()});
+
+/* ================= GLOBAL CLICK WIDGETS ================= */
+document.addEventListener('click',e=>{
+  const ex=e.target.closest('.ex');if(ex){ex.classList.toggle('open');return}
+  const opt=e.target.closest('.opt');if(opt){opt.classList.remove('wrong');void opt.offsetWidth;opt.classList.add(opt.dataset.ok?'right':'wrong');return}
+  const rv=e.target.closest('[data-reveal]');if(rv){$('#'+rv.dataset.reveal).classList.toggle('on');return}
+  const bl=e.target.closest('.blank');if(bl){bl.textContent=bl.textContent==='?'?bl.dataset.a:'?';bl.style.color=bl.textContent==='?'?'':'var(--green)';return}
+  const m=e.target.closest('.morph .m');if(m){m.classList.toggle('on');return}
+});
+
+/* ================= COVER BG ================= */
+(function(){const cv=$('#coverbg'),c=cv.getContext('2d');const P=Array.from({length:70},()=>({x:Math.random()*1600,y:Math.random()*900,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
+ let bot={x:1250,y:620,t:0};
+ function f(){if(slides[cur].id==='s-cover'){c.clearRect(0,0,1600,900);
+  for(const p of P){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>1600)p.vx*=-1;if(p.y<0||p.y>900)p.vy*=-1}
+  for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const d=Math.hypot(P[i].x-P[j].x,P[i].y-P[j].y);if(d<140){c.strokeStyle=`rgba(190,95,60,${.12*(1-d/140)})`;c.beginPath();c.moveTo(P[i].x,P[i].y);c.lineTo(P[j].x,P[j].y);c.stroke()}}
+  c.fillStyle='rgba(190,95,60,.5)';for(const p of P){c.beginPath();c.arc(p.x,p.y,2,0,7);c.fill()}
+  bot.t+=.01;const bx=1410+Math.cos(bot.t)*55,by=470+Math.sin(bot.t*1.7)*70;
+  c.font='70px "Segoe UI Emoji"';c.globalAlpha=.85;c.fillText('🤖',bx,by);c.font='40px "Segoe UI Emoji"';c.fillText('💎',1300,690);c.globalAlpha=1}
+  requestAnimationFrame(f)}f()})();
+
+/* ================= READING ================= */
+const PARA=["To attain genuine sustainability, designers must consider various factors transcending the product production.",
+"They need to adopt a comprehensive approach that encompasses the entire value chain.",
+"Digital twin technology plays a crucial role in optimizing sustainability performance at every stage, from raw material extraction to end-of-life disposal.",
+"The CNC (computer numerical control) and CMM (coordinate measuring machine) simulator is an example demonstrating how intelligent manufacturing transforms the production process.",
+"Software has been developed for simulating CNCs, CMMs, and the manufacturing processes.",
+"It provides a virtual environment that eliminates material waste, machine downtime, or the risk of damage to expensive equipment."];
+const GL={'attain':'达到；实现','genuine':'真正的','sustainability':'可持续性','transcending':'超越；超出','comprehensive':'全面的；综合的','approach':'方法；途径','encompasses':'包含；涵盖','value chain':'价值链','Digital twin':'数字孪生（第6段介绍过）','crucial':'关键的','optimizing':'优化','performance':'表现；性能','extraction':'开采；提取','end-of-life':'寿命终结的 → 报废的','disposal':'处置；处理','CNC':'计算机数控 —— 下一页详细讲','CMM':'三坐标测量机 —— 下一页详细讲','simulator':'模拟器','demonstrating':'展示；证明','transforms':'改变；转变','simulating':'模拟','virtual':'虚拟的','eliminates':'消除','downtime':'停机时间','equipment':'设备'};
+(function(){const keys=Object.keys(GL).sort((a,b)=>b.length-a.length);
+ $('#para7').innerHTML=PARA.map((s,i)=>{let t=s;const ph=[];keys.forEach(k=>{t=t.replace(new RegExp('\\b'+k.replace(/-/g,'\\-')+'\\b','g'),m=>{ph.push(`<span class="w" data-g="<b>${m}</b>　${GL[k]}">${m}</span>`);return '\u0001'+(ph.length-1)+'\u0002'})});
+  t=t.replace(/\u0001(\d+)\u0002/g,(_,n)=>ph[n]);return `<span class="s" data-i="${i}"><span class="sn">S${i+1}</span>${t}</span> `}).join('')})();
+function pickVoice(){const vs=speechSynthesis.getVoices();return vs.find(v=>/Aria|Jenny|Guy/i.test(v.name)&&/en-US/.test(v.lang))||vs.find(v=>/Google US English/.test(v.name))||vs.find(v=>/^en(-|_)US/.test(v.lang))||vs.find(v=>/^en/.test(v.lang))}
+function speak(idx){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const v=pickVoice(),rate=+$('#tts-rate').value;
+ idx.forEach(i=>{const el=$(`#para7 .s[data-i="${i}"]`);const u=new SpeechSynthesisUtterance(PARA[i]);u.lang='en-US';if(v)u.voice=v;u.rate=rate;
+  u.onstart=()=>{$$('#para7 .s').forEach(x=>x.classList.remove('reading'));el.classList.add('reading')};u.onend=()=>el.classList.remove('reading');speechSynthesis.speak(u)})}
+if('speechSynthesis' in window)speechSynthesis.getVoices();
+$('#para7').addEventListener('click',e=>{const s=e.target.closest('.s');if(s)speak([+s.dataset.i])});
+$('#tts-all').onclick=()=>speak([0,1,2,3,4,5]);
+$('#tts-stop').onclick=()=>{speechSynthesis.cancel();$$('#para7 .s').forEach(x=>x.classList.remove('reading'))};
+hooks['s-read']={leave(){if('speechSynthesis' in window)speechSynthesis.cancel()}};
+
+/* ================= CNC / CMM SCENE ================= */
+const CNC=(function(){
+ const tool=$('#tool'),cut=$('#cut'),probe=$('#probe'),marks=$('#marks'),gcode=$('#gcode'),svg=$('#cnc-svg');
+ let virtual=false,run=0,pts=[],pos=[590,50],cutDone=false,cost={mat:0,down:0,dmg:0};
+ const HOME=[590,50];
+ const PROG=[['O0007 (POCKET)',null],['G21 G90',null],['G00 X40 Y100 Z5',{to:[190,160],t:700}],['G01 Z-3 F150',{z:1,t:400}],['G01 X170',{to:[450,160],cut:1,t:1100}],['G01 Y35',{to:[450,290],cut:1,t:700}],['G01 X40',{to:[190,290],cut:1,t:1100}],['G01 Y67.5',{to:[190,225],cut:1,t:400}],['G01 X170',{to:[450,225],cut:1,t:1100}],['G00 Z5',{z:0,t:300}],['M30',{to:HOME,t:700}]];
+ const BAD=[['O0666 (BAD!)',null],['G00 X40 Y100 Z5',{to:[190,160],t:600}],['G00 X-10 Y65 Z-30',{to:[92,225],t:260,bad:1}],['; ⚠ 坐标写错 + 快速下刀',null]];
+ function setTool(p){pos=p;tool.setAttribute('transform',`translate(${p[0]},${p[1]})`)}
+ function showCode(prog,hl,title){$('#panel-title').textContent=title||'G 代码（数控程序）';gcode.innerHTML=prog.map((l,i)=>`<div style="padding:0 6px;border-radius:5px;${i===hl?'background:#F6E3DA;color:#8C3F22;font-weight:700':'color:#75726A'}">${String(i*10+10).padStart(3,'0')}  ${l[0]}</div>`).join('')}
+ function drawCut(){cut.setAttribute('d',pts.length?'M'+pts.map(p=>p.join(',')).join(' L'):'')}
+ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+ function anim(from,to,t,id,onp){return new Promise(res=>{const t0=performance.now();(function f(n){if(id!==run)return res(false);let k=Math.min(1,(n-t0)/t);k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;const p=[from[0]+(to[0]-from[0])*k,from[1]+(to[1]-from[1])*k];onp(p);if(k<1)requestAnimationFrame(f);else res(true)})(t0)})}
+ function setMode(v){virtual=v;$('#cnc-bgv').setAttribute('opacity',v?1:0);$('#cnc-modelabel').textContent=v?'VIRTUAL · 模拟器':'REAL · 真实车间';$('#cnc-modelabel').setAttribute('fill',v?'#BE5F3C':'#75726A');
+  const st=$('#stock');st.setAttribute('fill',v?'rgba(190,95,60,.07)':'url(#metal)');st.setAttribute('stroke',v?'#BE5F3C':'#C7C0B0');st.setAttribute('stroke-dasharray',v?'6 4':'');
+  cut.setAttribute('stroke',v?'rgba(190,95,60,.3)':'#6E6A61');cut.setAttribute('stroke-width',v?26:34);$$('#clampL,#clampR').forEach(c=>{c.setAttribute('fill',v?'none':'#E4DFD3');c.setAttribute('stroke',v?'#BE5F3C':'none');c.setAttribute('stroke-dasharray','4 3')});
+  $('#tool circle').setAttribute('fill',v?'rgba(226,232,240,.35)':'#C7C0B0')}
+ function updCost(){$('#c-mat').textContent='¥'+cost.mat.toLocaleString();$('#c-down').textContent=cost.down+' h';$('#c-dmg').textContent='¥'+cost.dmg.toLocaleString();
+  $$('#cost b').forEach(b=>b.style.color=(b.textContent==='¥0'||b.textContent==='0 h')?'var(--green)':'var(--red)')}
+ function countTo(key,val){const s=cost[key],t0=performance.now();(function f(n){const k=Math.min(1,(n-t0)/900);cost[key]=Math.round(s+(val-s)*k);updCost();if(k<1)requestAnimationFrame(f)})(t0)}
+ function reset(){run++;pts=[];drawCut();cutDone=false;setTool(HOME);probe.setAttribute('opacity',0);marks.innerHTML='';$('#tool-z').setAttribute('opacity',0);$('#flash').setAttribute('opacity',0);$('#crash-text').setAttribute('opacity',0);tool.style.opacity=1;$('#tool circle').setAttribute('stroke','#3D3D3A');
+  cost={mat:0,down:0,dmg:0};updCost();showCode(PROG,-1)}
+ async function runCNC(){const id=++run;pts=[];drawCut();marks.innerHTML='';probe.setAttribute('opacity',0);tool.style.opacity=1;$('#flash').setAttribute('opacity',0);$('#crash-text').setAttribute('opacity',0);setTool(HOME);let down=false;
+  for(let i=0;i<PROG.length;i++){showCode(PROG,i);const a=PROG[i][1];if(!a){await sleep(260);if(id!==run)return;continue}
+   if('z' in a){down=!!a.z;$('#tool-z').setAttribute('opacity',down?1:0);if(down)pts.push([...pos]);await sleep(a.t);if(id!==run)return;continue}
+   const from=[...pos];const ok=await anim(from,a.to,a.t,id,p=>{setTool(p);if(a.cut&&down){pts.push(p);drawCut()}});if(!ok)return}
+  cutDone=true;showCode(PROG,-1)}
+ async function runCMM(){const id=++run;if(!cutDone){pts=[[190,160],[450,160],[450,290],[190,290],[190,225],[450,225]];drawCut();cutDone=true}
+  setTool(HOME);tool.style.opacity=.25;marks.innerHTML='';probe.setAttribute('opacity',1);
+  const R=[['X 长度','163.00','163.02',true],['Y 宽度','98.00','97.97',true],['Z 深度','3.00','3.08',false]];
+  const renderRes=n=>{$('#panel-title').textContent='CMM 测量报告（公差 ±0.05 mm）';gcode.innerHTML=R.map((r,i)=>i<n?`<div style="margin-bottom:8px">${r[0]}<br><span class="muted">名义</span> ${r[1]}　<span class="muted">实测</span> <b style="color:${r[3]?'#5F7A45':'#B4453A'}">${r[2]} ${r[3]?'✓':'✗'}</b></div>`:`<div style="margin-bottom:8px;opacity:.35">${r[0]}<br><span class="muted">名义</span> ${r[1]}　<span class="muted">实测</span> …</div>`).join('')};
+  renderRes(0);const P=[[157,225],[483,225],[320,127],[320,323],[320,225]];let cp=[600,400];
+  for(let i=0;i<P.length;i++){const tgt=P[i];const ok=await anim(cp,tgt,550,id,p=>{probe.setAttribute('transform',`translate(${p[0]},${p[1]})`)});if(!ok)return;cp=tgt;
+   marks.insertAdjacentHTML('beforeend',`<circle cx="${tgt[0]}" cy="${tgt[1]}" r="6" fill="#9A6B1F"/><circle cx="${tgt[0]}" cy="${tgt[1]}" r="6" fill="none" stroke="#9A6B1F"><animate attributeName="r" from="6" to="22" dur=".6s" fill="freeze"/><animate attributeName="opacity" from="1" to="0" dur=".6s" fill="freeze"/></circle>`);
+   await sleep(250);if(id!==run)return;if(i===1)renderRes(1);if(i===3)renderRes(2);if(i===4)renderRes(3)}
+  marks.insertAdjacentHTML('beforeend',`<line x1="157" y1="${370}" x2="483" y2="370" stroke="#5F7A45" stroke-width="2"/><text x="320" y="392" fill="#5F7A45" text-anchor="middle" font-size="15">163.02</text>`);
+  gcode.insertAdjacentHTML('beforeend',`<div style="margin-top:14px;padding-top:10px;border-top:1px solid #E6E1D6;font-family:var(--zh);font-size:15px;line-height:1.6">${virtual?'<span style="color:#BE5F3C">1 项超差 → 在模拟器里调整刀具补偿，再试一次。<br>代价：¥0 😎</span>':'<span style="color:#B4453A">1 项超差 → 零件报废，重新上料加工。</span>'}</div>`);
+  if(!virtual){countTo('mat',cost.mat+800)}}
+ async function runBad(){const id=++run;pts=[];drawCut();marks.innerHTML='';probe.setAttribute('opacity',0);tool.style.opacity=1;setTool(HOME);$('#crash-text').setAttribute('opacity',0);
+  for(let i=0;i<BAD.length;i++){showCode(BAD,i);const a=BAD[i][1];if(!a){await sleep(300);if(id!==run)return;continue}
+   const ok=await anim([...pos],a.to,a.t,id,p=>setTool(p));if(!ok)return;
+   if(a.bad){const fl=$('#flash'),tx=$('#crash-text');
+    if(virtual){fl.setAttribute('fill','#9A6B1F');fl.setAttribute('opacity',.25);$('#tool circle').setAttribute('stroke','#B4453A');tool.style.opacity=.5;tx.textContent='⚠ 碰撞检测：第 030 行将撞上夹具 —— 已在虚拟环境中拦截，代价 ¥0';tx.setAttribute('fill','#8A6D1F')}
+    else{fl.setAttribute('fill','#B4453A');fl.setAttribute('opacity',.55);svg.classList.remove('shake');void svg.getBBox();svg.classList.add('shake');tx.textContent='💥 撞刀！工件报废，主轴受损，停机检修';tx.setAttribute('fill','#fff');countTo('mat',cost.mat+800);countTo('down',cost.down+6);countTo('dmg',cost.dmg+25000)}
+    tx.setAttribute('opacity',1);setTimeout(()=>{if(id===run)fl.setAttribute('opacity',virtual?.08:.15)},500)}}}
+ $('#cnc-mode').onclick=()=>{setMode(!virtual);reset()};$('#cnc-run').onclick=runCNC;$('#cmm-run').onclick=runCMM;$('#cnc-crash').onclick=runBad;$('#cnc-reset').onclick=reset;
+ setMode(false);reset();return{reset}})();
+hooks['s-cnc']={leave(){CNC.reset()}};
+
+/* ================= DIGITAL TWIN ================= */
+const TWIN=(function(){const svg=$('#twin-svg');let mode='sim',on=false,temp=62,vtemp=62,fault=0,dots=[],t=0,fix=0;
+ const machine=(x,cls)=>`<g transform="translate(${x},70)" class="${cls}"><rect x="0" y="40" width="230" height="150" rx="16"/><circle cx="70" cy="115" r="42"/><path d="M70 80 L70 150 M35 115 L105 115 M45 90 L95 140 M95 90 L45 140"/><rect x="140" y="70" width="70" height="90" rx="8"/><rect x="20" y="190" width="190" height="16" rx="4"/></g>`;
+ svg.innerHTML=`<style>.phys rect,.phys circle{fill:#E4DFD3;stroke:#CFC9BB;stroke-width:2}.phys path{stroke:#C7C0B0;stroke-width:3}.virt rect,.virt circle{fill:rgba(190,95,60,.06);stroke:#BE5F3C;stroke-width:2;stroke-dasharray:6 4}.virt path{stroke:#BE5F3C;stroke-width:2}</style>
+ <text x="155" y="40" text-anchor="middle" fill="#191919" font-size="20" font-weight="700">真实设备 Physical</text>
+ <text x="745" y="40" text-anchor="middle" fill="#BE5F3C" font-size="20" font-weight="700">虚拟模型 Virtual</text>
+ ${machine(40,'phys')}${machine(630,'virt')}
+ <g id="tw-fan" transform="translate(110,185)"><path d="M0 -30 L0 30 M-30 0 L30 0" stroke="#fff" stroke-width="4"/></g>
+ <text id="tw-pt" x="215" y="190" text-anchor="middle" font-size="22" font-weight="800" fill="#5F7A45">62°C</text>
+ <text id="tw-vt" x="805" y="190" text-anchor="middle" font-size="22" font-weight="800" fill="#BE5F3C">62°C</text>
+ <path id="tw-up" d="M290 130 C400 90 520 90 620 130" fill="none" stroke="#BE5F3C" stroke-width="2" stroke-dasharray="5 6"/>
+ <path id="tw-dn" d="M620 250 C520 290 400 290 290 250" fill="none" stroke="#9A6B1F" stroke-width="2" stroke-dasharray="5 6"/>
+ <text id="tw-upl" x="455" y="88" text-anchor="middle" font-size="16" fill="#BE5F3C">实时传感数据：温度 · 振动 · 转速 →</text>
+ <text id="tw-dnl" x="455" y="312" text-anchor="middle" font-size="16" fill="#9A6B1F">← 反馈：预警 · 优化指令</text>
+ <g id="tw-nolink"><line x1="330" y1="190" x2="580" y2="190" stroke="#A9A49A" stroke-width="2" stroke-dasharray="8 8"/><text x="455" y="178" text-anchor="middle" font-size="16" fill="#75726A">✕ 不实时连接</text></g>
+ <g id="tw-hyp"><rect x="640" y="300" width="230" height="64" rx="10" fill="#FFFFFF" stroke="#B0557D"/><text x="755" y="326" text-anchor="middle" font-size="16" fill="#B0557D">输入假设：转速 = 3000 rpm ?</text><text id="tw-pred" x="755" y="350" text-anchor="middle" font-size="16" fill="#191919">→ 预测温度 71°C</text></g>
+ <text id="tw-msg" x="745" y="365" text-anchor="middle" font-size="17" font-weight="700" fill="#B4453A"></text>
+ <g id="tw-dots"></g>`;
+ function setMode(m){mode=m;$('#tw-sim').classList.toggle('on',m==='sim');$('#tw-twin').classList.toggle('on',m==='twin');const tw=m==='twin';
+  ['tw-up','tw-dn','tw-upl','tw-dnl'].forEach(i=>$('#'+i).style.opacity=tw?1:0);$('#tw-nolink').style.opacity=tw?0:1;$('#tw-hyp').style.opacity=tw?0:1;$('#tw-msg').textContent='';fault=0;temp=62;fix=0}
+ function loop(){if(!on)return;t++;
+  if(fault===1){temp=Math.min(96,temp+.6)}else{temp+=(62-temp)*.03+(Math.random()-.5)*.6}
+  if(mode==='twin'){vtemp+=(temp-vtemp)*.12;if(fault===1&&vtemp>85){fault=2;fix=t}
+   if(fault===2){$('#tw-msg').textContent='⚠ 过热！建议降速 20% → 已下发';if(t-fix>40){fault=0}}else if(t-fix>160)$('#tw-msg').textContent=''}
+  else{vtemp=71;if(fault===1)$('#tw-msg').textContent='模拟并不知道现实发生了什么 🤷';}
+  $('#tw-pt').textContent=temp.toFixed(0)+'°C';$('#tw-pt').setAttribute('fill',temp>80?'#B4453A':'#5F7A45');
+  $('#tw-vt').textContent=(mode==='twin'?vtemp:71).toFixed(0)+'°C';$('#tw-vt').setAttribute('fill',mode==='twin'&&vtemp>80?'#B4453A':'#BE5F3C');
+  $('#tw-fan').setAttribute('transform',`translate(110,185) rotate(${t*(fault===2?4:9)})`);
+  if(mode==='twin'){if(t%14===0)dots.push({p:'tw-up',k:0});if(t%30===0||(fault===2&&t%6===0))dots.push({p:'tw-dn',k:0,hot:fault===2})}
+  dots.forEach(d=>d.k+=.012);dots=dots.filter(d=>d.k<1&&mode==='twin');
+  $('#tw-dots').innerHTML=dots.map(d=>{const P=$('#'+d.p),L=P.getTotalLength(),pt=P.getPointAtLength(L*d.k);return `<circle cx="${pt.x}" cy="${pt.y}" r="${d.hot?7:5}" fill="${d.p==='tw-up'?'#BE5F3C':(d.hot?'#B4453A':'#9A6B1F')}"/>`}).join('');
+  requestAnimationFrame(loop)}
+ $('#tw-sim').onclick=()=>setMode('sim');$('#tw-twin').onclick=()=>setMode('twin');$('#tw-fault').onclick=()=>{fault=1;fix=0};
+ setMode('sim');
+ $('#vchain-mini').insertAdjacentHTML('beforeend',[['⛏','原材料开采','raw material extraction'],['🏭','生产制造','production'],['🚚','运输分销','distribution'],['🔧','使用维护','use & maintenance'],['♻','报废处置','end-of-life disposal']].map((n,i)=>`${i?'<div style="align-self:center;color:var(--dim);font-size:24px">→</div>':''}<div class="card" style="flex:1;padding:10px 12px;text-align:center"><div style="font-size:26px">${n[0]}</div><b style="font-size:17px">${n[1]}</b><div class="note" style="font-size:13px">${n[2]}</div></div>`).join(''));
+ return{start(){if(!on){on=true;loop()}},stop(){on=false}}})();
+hooks['s-twin']={enter(){TWIN.start()},leave(){TWIN.stop()}};
+
+/* ================= SUSTAIN LADDER / TABS / SUFFIX ================= */
+(function(){const L=[[['sustain'],'v. 维持；支撑'],[['sustain','able'],'adj. 可持续的'],[['sustain','abil','ity'],'n. 可持续性']];let n=0;
+ const draw=()=>{$('#sus-ladder').innerHTML=L.slice(0,n+1).map((r,i)=>`<div style="display:flex;align-items:center;gap:14px;margin:6px 0;margin-left:${i*26}px;transition:.3s"><span class="tok" style="font-size:22px">${r[0].map((p,j)=>`<span class="pc" style="${j===r[0].length-1&&i>0?'color:var(--amber)':''}">${p}</span>`).join('')}</span><span class="muted" style="font-size:17px">${r[1]}</span></div>`).join('')};
+ $('#sus-next').onclick=()=>{n=(n+1)%3;draw()};draw()})();
+(function(){const E=['⛏ <b>mineral extraction</b> 矿产开采<br><i>Rare earth extraction must be balanced with environmental protection.</i><br><span class="muted">稀土开采必须与环境保护相平衡。</span>',
+ '🧠 <b>feature extraction</b> 特征提取<br><i>CNNs perform feature extraction on remote-sensing images.</i><br><span class="muted">卷积神经网络对遥感影像进行特征提取。</span>',
+ '🦷 <b>tooth extraction</b> 拔牙<br><i>I had a wisdom tooth extraction last week.</i><br><span class="muted">我上周拔了一颗智齿。</span>',
+ '🌿 <b>extract</b> n. 提取物；摘录：<i>vanilla extract</i> 香草精 · <i>an extract from the novel</i> 小说节选<br><span class="muted">注意重音：动词 ex<b>TRACT</b>，名词 <b>EX</b>tract</span>'];
+ const set=k=>{$$('#ext-tabs .btn').forEach(b=>b.classList.toggle('on',+b.dataset.k===k));$('#ext-box').innerHTML=E[k]};$$('#ext-tabs .btn').forEach(b=>b.onclick=()=>set(+b.dataset.k));set(0)})();
+(function(){const W=['simulate','simulation','simulator'];const O=['simul<b class="c-pink">ate</b> v. <b>模拟</b>（动作）—— <i>simulate a crash test</i> 模拟碰撞测试<br><span class="note">同款：calcul<b>ate</b> · navig<b>ate</b> · gener<b>ate</b></span>',
+ 'simul<b class="c-pink">ation</b> n. <b>模拟</b>（过程）—— <i>computer simulation</i> 计算机模拟<br><span class="note">calcul<b>ation</b> · navig<b>ation</b> · gener<b>ation</b></span>',
+ 'simul<b class="c-pink">ator</b> n. <b>模拟器</b>（工具）—— <i>flight simulator</i> 飞行模拟器<br><span class="note">calcul<b>ator</b> 计算器 · navig<b>ator</b> 导航员 · gener<b>ator</b> 发电机</span>'];
+ const set=k=>{$$('.sfx').forEach(b=>b.classList.toggle('on',+b.dataset.s===k));$('#sfx-out').innerHTML=O[k];$('#simword').textContent=W[k]};$$('.sfx').forEach(b=>b.onclick=()=>set(+b.dataset.s));set(0)})();
+
+/* Draw the stroke first; reveal its arrowhead only when the drawing finishes. */
+function drawSvgLine(p,show,instant=false,delay=0,duration=700){
+ if(p._lineShown===show&&!instant)return;p._lineShown=show;
+ if(p._lineAnimation){p._lineAnimation.cancel();p._lineAnimation=null}
+ p.removeAttribute('marker-end');p.setAttribute('opacity',show?1:0);
+ const L=p.getTotalLength();p.style.strokeDasharray=`${L} ${L}`;p.style.strokeDashoffset=show?'0':String(L);
+ const marker=p.dataset.marker;
+ if(!show)return;if(instant){if(marker)p.setAttribute('marker-end',marker);return}
+ const animation=p.animate([{strokeDashoffset:String(L)},{strokeDashoffset:'0'}],{duration,delay,easing:'ease',fill:'backwards'});
+ p._lineAnimation=animation;
+ animation.finished.then(()=>{if(p._lineAnimation!==animation||!p._lineShown)return;p._lineAnimation=null;animation.cancel();if(marker)p.setAttribute('marker-end',marker)}).catch(()=>{});
+}
+
+/* ================= VALUE CHAIN (transcend / encompass) ================= */
+(function(){const svg=$('#vc-svg');const N=[['⛏','原材料开采'],['🏭','生产制造'],['🚚','运输分销'],['🔧','使用维护'],['♻','报废处置']];const w=210,g=60,x0=(1456-(5*w+4*g))/2,y=110,h=90;
+ let s=`<defs><marker id="vcar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#B0557D"/></marker></defs>`;
+ N.forEach((n,i)=>{const x=x0+i*(w+g);s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="#FFFFFF" stroke="#E6E1D6" stroke-width="2" ${i===1?'id="vc-prod"':''}/><text x="${x+w/2}" y="${y+40}" text-anchor="middle" font-size="28">${n[0]}</text><text x="${x+w/2}" y="${y+72}" text-anchor="middle" font-size="19" fill="#191919" font-weight="700">${n[1]}</text>`;if(i<4)s+=`<path d="M${x+w+10} ${y+h/2}h${g-20}" stroke="#A9A49A" stroke-width="3" marker-end="url(#vcar)"/>`});
+ const px=x0+w+g;
+ s+=`<text id="vc-l1" x="${px+w/2}" y="${y+h+30}" text-anchor="middle" font-size="17" fill="#9A6B1F" opacity="0" style="transition:.4s">设计者的「舒适区」：只管生产</text>`;
+ s+=`<path id="vc-t1" d="M${px+w*0.7} ${y+10} C${px+w*0.9} ${y-70} ${px+w+g+60} ${y-70} ${px+w+g+90} ${y-6}" fill="none" stroke="#B0557D" stroke-width="4" data-marker="url(#vcar)" opacity="0"/>`;
+ s+=`<path id="vc-t2" d="M${px+w*0.3} ${y+10} C${px+w*0.1} ${y-70} ${x0+w-60} ${y-70} ${x0+w-100} ${y-6}" fill="none" stroke="#B0557D" stroke-width="4" data-marker="url(#vcar)" opacity="0"/>`;
+ s+=`<text id="vc-tl" x="${px+w/2}" y="24" text-anchor="middle" font-size="22" font-weight="800" fill="#B0557D" opacity="0" style="transition:.4s .5s">transcend：跨出生产这道墙</text>`;
+ const cx=728,rx=722,ry=100;s+=`<ellipse id="vc-e" cx="${cx}" cy="${y+h/2}" rx="${rx}" ry="${ry}" fill="none" stroke="#BE5F3C" stroke-width="4" opacity="0"/>`;
+ s+=`<text id="vc-el" x="${cx}" y="292" text-anchor="middle" font-size="22" font-weight="800" fill="#BE5F3C" opacity="0" style="transition:.4s 1.2s">encompass：用「圆规」把整条价值链圈进来</text>`;
+ svg.innerHTML=s;
+ hooks['s-v2']={step(sl,n){$('#vc-prod').setAttribute('stroke',n>=1?'#9A6B1F':'#E6E1D6');$('#vc-prod').setAttribute('stroke-width',n>=1?4:2);$('#vc-l1').setAttribute('opacity',n>=1&&n<3?1:0);
+  ['vc-t1','vc-t2'].forEach((id,i)=>drawSvgLine($('#'+id),n>=2,false,i*200,900));$('#vc-tl').setAttribute('opacity',n>=2?1:0);drawSvgLine($('#vc-e'),n>=3,false,0,1600);$('#vc-el').setAttribute('opacity',n>=3?1:0)},leave(){['vc-t1','vc-t2','vc-e'].forEach(id=>drawSvgLine($('#'+id),false,true))}};
+ $('#s-v2').dataset.steps=3})();
+
+/* ================= SENTENCES ================= */
+function parseToks(str){return str.split(/\s+/).filter(Boolean).map(t=>{if(t==='|')return{br:1};const[a,r,k]=t.split('/');const core=/\*$/.test(k||'');return{text:a,pieces:a.split('·'),r,k:(k||'').replace('*',''),core}})}
+const sentHook={enter(sl){layoutArcs(sl);if(step>=3)showArcs(sl,true,true)},step(sl,n){const S=sl._S;S.el.classList.toggle('colored',n>=1);$('.legend',sl).style.opacity=n>=1?1:0;S.el.classList.toggle('skel',n>=2);S.el.classList.toggle('isolated',n===2);if(n>=3&&!S.shown)showArcs(sl,true);if(n<3&&S.shown){focusTok(sl,null,false);showArcs(sl,false)}},leave(sl){focusTok(sl,null,false);showArcs(sl,false)}};
+function buildSentence(sl){const id=sl.dataset.sent,D=SENTS[id];const el=$('.sent',sl);el.style.padding='86px 10px 88px';el.style.rowGap='100px';el.style.marginTop='14px';
+ const toks=parseToks(D.toks);const map={};
+ el.innerHTML=toks.map(t=>t.br?'<div class="brk"></div>':`<span class="tok ${t.r==='p'?'punct':''} ${t.core?'core':''}" data-r="${t.r}" data-k="${t.k}" style="font-size:${D.fs}px">${t.pieces.map(p=>`<span class="pc">${p}</span>`).join('')}<span class="tid">${t.pieces.map(p=>hash(p.toLowerCase())%30000+1000).join('·')}</span></span>`).join('')+'<svg class="arcs"></svg>';
+ $$('.tok',el).forEach(t=>{if(t.dataset.k)map[t.dataset.k]=t});
+ const roles=[...new Set(toks.filter(t=>!t.br&&t.r!=='p').map(t=>t.r))];
+ const lg=$('.legend',sl);lg.style.transition='opacity .4s';lg.style.opacity=0;lg.innerHTML=roles.map(r=>`<span><i style="background:${ROLE[r][1]}"></i>${ROLE[r][0]}</span>`).join('')+'<span class="muted">｜ 第三步恢复完整句子并显示连线：粗细表示关系强弱 · 悬停查看关联词</span>';
+ const sb=$('.sbottom',sl);sb.style.cssText='display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:16px';
+ sb.innerHTML=`<div><div class="card f" data-f="2" style="margin-bottom:12px;padding:14px 18px"><div class="note">主干（骨架）</div><div class="sk-box" style="font-size:24px;text-align:left">${D.skel}</div></div><div class="card f glow" data-f="4" style="padding:14px 18px"><div class="note">参考译文</div><div class="zh" style="font-size:21px;line-height:1.6">${D.zh}</div></div></div>
+ <div><div class="card f" data-f="4" style="padding:12px 16px;font-size:17px;line-height:1.6;margin-bottom:12px">${D.notes[0]}</div><div class="card f" data-f="4" style="padding:12px 16px;font-size:17px;line-height:1.6">${D.notes[1]}</div></div>
+ <div><div class="card f" data-f="4" style="padding:12px 16px;font-size:17px;line-height:1.6">${D.notes[2]}</div></div>`;
+ sl._S={el,svg:$('svg.arcs',el),map,arcs:D.arcs,shown:false};
+ $$('.tok',el).forEach(t=>{t.addEventListener('mouseenter',()=>focusTok(sl,t.dataset.k,true));t.addEventListener('mouseleave',()=>focusTok(sl,null,false))})}
+function layoutArcs(sl){const S=sl._S,el=S.el,W=el.offsetWidth,H=el.offsetHeight;const svg=S.svg;svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+ const cols=[...new Set(Object.values(ROLE).map(r=>r[1]))];
+ const markerId=c=>`s${sl.dataset.sent}-m${c.slice(1)}`;
+ let s='<defs>'+cols.map(c=>`<marker id="${markerId(c)}" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="${c}"/></marker>`).join('')+'</defs>';
+ S.arcs.forEach((a,i)=>{const A=S.map[a[0]],B=S.map[a[1]];if(!A||!B){console.warn('arc',a);return}
+  const ax=A.offsetLeft+A.offsetWidth/2,bx=B.offsetLeft+B.offsetWidth/2,at=A.offsetTop,ab=at+A.offsetHeight,bt=B.offsetTop,bb=bt+B.offsetHeight;let d,lx=ax*.4+bx*.6,ly;
+  if(Math.abs(at-bt)<8){const dx=Math.abs(ax-bx),h=14+62*(1-Math.exp(-dx/350));if((a[4]||'u')==='u'){d=`M${ax},${at-2} C${ax},${at-h*1.33} ${bx},${bt-h*1.33} ${bx},${bt-2}`;ly=at-h-5}else{d=`M${ax},${ab+2} C${ax},${ab+h*1.33} ${bx},${bb+h*1.33} ${bx},${bb+2}`;ly=ab+h+15}}
+  else if(at<bt){const m=bt-ab;d=`M${ax},${ab+2} C${ax},${ab+m*.7} ${bx},${bt-m*.7} ${bx},${bt-2}`;ly=(ab+bt)/2+5}
+  else{const m=at-bb;d=`M${ax},${at-2} C${ax},${at-m*.7} ${bx},${bb+m*.7} ${bx},${bb+2}`;ly=(bb+at)/2+5}
+  const col=ROLE[A.dataset.r][1],w=a[3];
+  s+=`<path class="arc" data-i="${i}" data-a="${a[0]}" data-b="${a[1]}" d="${d}" stroke="${col}" stroke-width="${1.5+w*3.2}" data-w="${1.5+w*3.2}" data-marker="url(#${markerId(col)})" opacity="0"/>`;
+  if(a[2])s+=`<text class="arc-l" data-a="${a[0]}" data-b="${a[1]}" x="${lx}" y="${ly}" text-anchor="middle" fill="${col}" opacity="0">${a[2]}</text>`});
+ svg.innerHTML=s;S.shown=false}
+function showArcs(sl,show,instant){const S=sl._S;S.shown=show;
+ $$('path.arc',S.svg).forEach((p,i)=>{drawSvgLine(p,show,instant,i*80);p.setAttribute('opacity',show?.85:0)});
+ $$('text.arc-l',S.svg).forEach((t,i)=>{t.style.transition=instant?'none':`opacity .35s ${show?.4+i*.08:0}s`;t.setAttribute('opacity',show?1:0)})}
+function focusTok(sl,k,on){const S=sl._S;if(!S.shown){return}
+ S.el.classList.toggle('focus',on);$$('.tok',S.el).forEach(t=>t.classList.remove('hl','hl2'));
+ $$('path.arc,text.arc-l',S.svg).forEach(p=>{const rel=on&&(p.dataset.a===k||p.dataset.b===k);p.style.opacity=on?(rel?1:.06):'';if(p.tagName==='path')p.setAttribute('stroke-width',rel?(+p.dataset.w+2.5):p.dataset.w);
+  if(rel){S.map[p.dataset.a].classList.add('hl2');S.map[p.dataset.b].classList.add('hl2')}});
+ if(on&&S.map[k])S.map[k].classList.add('hl')}
+$$('.slide[data-sent]').forEach(buildSentence);
+
+/* ================= PARAGRAPH MAP ================= */
+(function(){const svg=$('#map-svg');const B=[['原则 Principle','S1–S2','#7C5C9E',['transcend 生产','encompass 整条价值链']],['技术 Technology','S3','#BE5F3C',['digital twin','optimize 每个阶段']],['例子 Example','S4–S5','#9A6B1F',['CNC & CMM simulator','software has been developed']],['收益 Benefit','S6','#5F7A45',['virtual environment','eliminates waste ·','downtime · risk']]];
+ const w=310,g=72,x0=(1456-(4*w+3*g))/2,y=20,h=190;let s=`<defs><marker id="mpa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#75726A"/></marker></defs>`;
+ B.forEach((b,i)=>{const x=x0+i*(w+g);s+=`<g class="mp" data-i="${i}" style="opacity:0;transition:opacity .5s,transform .5s;transform:translateY(16px)"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="18" fill="#FFFFFF" stroke="${b[2]}" stroke-width="2.5"/><text x="${x+22}" y="${y+44}" font-size="26" font-weight="800" fill="${b[2]}">${b[0]}</text><text x="${x+w-20}" y="${y+44}" font-size="17" text-anchor="end" fill="#75726A" font-family="Consolas">${b[1]}</text>${b[3].map((l,j)=>`<text x="${x+22}" y="${y+90+j*34}" font-size="19" fill="#191919">• ${l}</text>`).join('')}</g>`;
+  if(i<3)s+=`<path class="mpa" data-i="${i+1}" d="M${x+w+8} ${y+h/2}h${g-16}" stroke="#75726A" stroke-width="3" marker-end="url(#mpa)" style="opacity:0;transition:.4s"/>`});
+ const cy=y+h+40;
+ s+=`<g id="mp-co" style="opacity:0;transition:.5s"><text x="${x0}" y="${cy+10}" font-size="19" fill="#75726A">🔗 句与句之间的联系：指代与衔接</text>`+[["S2 They → S1 designers","#7C5C9E"],["S6 It → S5 Software","#5F7A45"],["S3 Digital twin ← 第 6 段","#BE5F3C"]].map((t,i)=>`<rect x="${x0+i*400}" y="${cy+30}" width="370" height="46" rx="23" fill="${t[1]}22" stroke="${t[1]}"/><text x="${x0+i*400+185}" y="${cy+60}" text-anchor="middle" font-size="19" font-weight="700" fill="${t[1]}">${t[0]}</text>`).join("")+`</g>`;
+ svg.innerHTML=s;
+ hooks['s-map']={step(sl,n){$$('.mp',svg).forEach(g=>{const on=+g.dataset.i<n;g.style.opacity=on?1:0;g.style.transform=on?'none':'translateY(16px)'});$$('.mpa',svg).forEach(p=>p.style.opacity=+p.dataset.i<n?1:0);$('#mp-co').style.opacity=n>=4?1:0}};
+ $('#s-map').dataset.steps=5})();
+
+/* ================= LLM PLAYGROUND ================= */
+(function(){const steps=['📄 文本','✂ Tokenizer 切分','🔢 Token IDs','📐 Embedding 向量','🔗 Attention 加权求和','🧠 上下文表示'];
+ $('#llm-pipe').innerHTML=steps.map((s,i)=>`${i?'<span class="lp" style="color:var(--dim);font-size:22px;opacity:0;transition:.3s '+(i*.25)+'s">→</span>':''}<span class="chip lp" style="font-size:18px;padding:8px 14px;opacity:0;transition:.4s ${i*.25}s;${i===1||i===4?'border-color:var(--cyan);color:var(--cyan)':''}">${s}</span>`).join('');
+ const OV={};Object.values(SENTS).forEach(D=>parseToks(D.toks).forEach(t=>{if(t.pieces&&t.pieces.length>1)OV[t.pieces.join('').toLowerCase()]=t.pieces.map(p=>p.toLowerCase())}));
+ const REL={};Object.values(SENTS).forEach(D=>{const tk=parseToks(D.toks),byk={};tk.forEach(t=>{if(t.k)byk[t.k]=t.pieces.join('').toLowerCase()});D.arcs.forEach(a=>{const x=byk[a[0]],y=byk[a[1]];if(x&&y){REL[x+'|'+y]=Math.max(REL[x+'|'+y]||0,a[3]);REL[y+'|'+x]=Math.max(REL[y+'|'+x]||0,a[3]*.7)}})});
+ const PRE=['trans','inter','under','over','dis','sus','com','con','pre','en','ex','re','un','at'];const SUF=['ability','ation','ment','ness','ance','ence','ical','ing','ity','ize','able','ible','tion','sion','ful','less','ous','ive','al','er','or','ed','ly','es','s'];
+ function ptok(w){const lw=w.toLowerCase();if(OV[lw])return OV[lw];if(lw.length<=4||!/^[a-z]+$/.test(lw))return[lw];let stem=lw,suf=[];
+  for(let k=0;k<2;k++){const s=SUF.find(s=>stem.endsWith(s)&&stem.length-s.length>=4);if(!s)break;suf.unshift(s);stem=stem.slice(0,-s.length)}
+  let pre=[];const p=PRE.find(p=>stem.startsWith(p)&&stem.length-p.length>=4);if(p){pre=[p];stem=stem.slice(p.length)}return[...pre,stem,...suf]}
+ let tokens=[],q=-1;
+ function run(){const txt=$('#llm-in').value,words=(txt.match(/[A-Za-z][A-Za-z'-]*|[0-9]+|[^\sA-Za-z0-9]/g)||[]).slice(0,40);
+  tokens=words.flatMap((w,wordIndex)=>ptok(w).map((piece,k)=>({piece,label:(k?'##':'')+piece,id:hash(piece)%30000+1000,word:w.toLowerCase(),wordIndex})));q=-1;render()}
+ function att(i){const a=tokens[i];const sc=tokens.map((b,j)=>{let s=1.1/(1+Math.abs(i-j))+(hash(a.piece+'#'+b.piece)%100)/400;if(i===j)s+=.6;if(a.wordIndex===b.wordIndex)s+=.6;s+=2.8*(REL[a.word+'|'+b.word]||0);if(/^[^a-z]/i.test(b.piece))s-=1;return s/0.55});
+  const m=Math.max(...sc),e=sc.map(v=>Math.exp(v-m)),z=e.reduce((a,b)=>a+b);return e.map(v=>v/z)}
+ const weightLabel=v=>v>=.001?v.toFixed(3):v.toExponential(1);
+ const tokenLabel=j=>`${tokens[j].label} #${tokens[j].id}`;
+ function render(){const A=q>=0?att(q):null,mx=A?Math.max(...A):1;
+  $('#llm-toks').innerHTML=tokens.map((t,j)=>{const a=A?A[j]/mx:0;return `<span class="tok" data-j="${j}" data-token-id="${t.id}"${A?` data-weight="${A[j]}"`:''} style="font-size:22px;cursor:pointer;margin:0 4px;${A?`background:rgba(154,107,31,${.06+a*.7});border-color:${j===q?'var(--clay)':`rgba(154,107,31,${.25+a*.75})`};${j===q?'box-shadow:0 0 0 2px var(--clay)':''}`:''}"><span class="pc">${t.label}</span><span class="tid" style="opacity:1;color:var(--muted)">${t.id}</span>${A?`<span style="position:absolute;top:-22px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:13px;color:#9A6B1F">${weightLabel(A[j])}</span>`:''}</span>`}).join('');
+  if(A){const top=A.map((v,j)=>[v,j]).filter(x=>x[1]!==q).sort((a,b)=>b[0]-a[0]).slice(0,4);$('#llm-sum').innerHTML=`h(<b class="c-cyan">${tokenLabel(q)}</b>) = ${weightLabel(A[q])}·v(${tokenLabel(q)})`+top.map(([v,j])=>` + <b class="c-amber">${weightLabel(v)}</b>·v(${tokenLabel(j)})`).join('')+(tokens.length>5?' + …':'')+'<br><span class="muted">每个片段 / ID 单独分配权重，总和为 1（显示值有舍入）；公式列出当前片段与权重最高的关联片段。</span>'}
+  else $('#llm-sum').innerHTML='👆 点击任意一个片段作为 <b class="c-amber">Query</b>，查看每个 token ID 的注意力权重（总和为 1）';}
+ $('#llm-toks').addEventListener('click',e=>{const t=e.target.closest('.tok');if(t){q=+t.dataset.j;render()}});
+ $('#llm-go').onclick=run;$('#llm-in').addEventListener('keydown',e=>{if(e.key==='Enter')run()});run();
+ hooks['s-llm']={enter(){$$('#llm-pipe .lp').forEach(x=>x.style.opacity=0);setTimeout(()=>$$('#llm-pipe .lp').forEach(x=>x.style.opacity=1),80)}}})();
+
+/* ================= GRADIENT DESCENT ================= */
+const GD=(function(){const cv=$('#gd-cv'),c=cv.getContext('2d'),W=820,H=470;const L=w=>.15*w**4-.9*w*w+.35*w+2,dL=w=>.6*w**3-1.8*w+.35;
+ const X=w=>60+(w+3.2)/6.4*(W-90),Y=l=>H-50-(l+.3)/8*(H-90),Wx=x=>(x-60)/(W-90)*6.4-3.2;let w=2.6,trail=[],timer=null,msg='';
+ function draw(){c.clearRect(0,0,W,H);c.strokeStyle='#E6E1D6';c.lineWidth=1;c.beginPath();c.moveTo(50,H-50);c.lineTo(W-20,H-50);c.moveTo(60,20);c.lineTo(60,H-40);c.stroke();
+  c.fillStyle='#75726A';c.font='15px Microsoft YaHei';c.fillText('参数 w →',W-90,H-25);c.save();c.translate(30,140);c.rotate(-Math.PI/2);c.fillText('损失 L(w) →',0,0);c.restore();
+  const gr=c.createLinearGradient(0,0,0,H);gr.addColorStop(0,'rgba(180,69,58,.25)');gr.addColorStop(1,'rgba(190,95,60,.05)');c.beginPath();for(let x=60;x<=W-30;x+=2){const ww=Wx(x),l=L(ww);x===60?c.moveTo(x,Y(l)):c.lineTo(x,Y(l))}
+  c.lineTo(W-30,H-50);c.lineTo(60,H-50);c.fillStyle=gr;c.fill();c.beginPath();for(let x=60;x<=W-30;x+=2){const l=L(Wx(x));x===60?c.moveTo(x,Y(l)):c.lineTo(x,Y(l))}c.strokeStyle='#191919';c.lineWidth=3;c.stroke();
+  c.font='16px Microsoft YaHei';c.fillStyle='#5F7A45';c.fillText('⭐ 全局最优',X(-1.82)-40,Y(L(-1.82))+30);c.fillStyle='#9A6B1F';c.fillText('局部最优（小坑）',X(1.62)-60,Y(L(1.62))+30);
+  if(trail.length>1){c.strokeStyle='rgba(154,107,31,.8)';c.lineWidth=2;c.setLineDash([4,4]);c.beginPath();trail.forEach((t,i)=>{const p=[X(t),Y(L(t))];i?c.lineTo(...p):c.moveTo(...p)});c.stroke();c.setLineDash([]);trail.forEach(t=>{c.fillStyle='rgba(154,107,31,.6)';c.beginPath();c.arc(X(t),Y(L(t)),4,0,7);c.fill()})}
+  if(Math.abs(w)<3.3){const g=dL(w),x=X(w),y=Y(L(w));const s=(Y(L(w)+g*.01)-y)/(X(w+.01)-x);const dx=60;c.strokeStyle='#9A6B1F';c.lineWidth=2;c.beginPath();c.moveTo(x-dx,y-s*dx);c.lineTo(x+dx,y+s*dx);c.stroke();
+   const dir=g>0?-1:1;c.strokeStyle='#BE5F3C';c.lineWidth=4;c.beginPath();c.moveTo(x,y-22);c.lineTo(x+dir*45,y-22);c.stroke();c.beginPath();c.moveTo(x+dir*45,y-22);c.lineTo(x+dir*35,y-29);c.lineTo(x+dir*35,y-15);c.closePath();c.fillStyle='#BE5F3C';c.fill();
+   c.fillStyle='#B4453A';c.beginPath();c.arc(x,y,11,0,7);c.fill();c.strokeStyle='#fff';c.lineWidth=2;c.stroke()}
+  c.fillStyle='#191919';c.font='17px Consolas';const g=dL(w);c.fillText(`w = ${w.toFixed(3)}   L = ${Math.abs(w)<50?L(w).toFixed(3):'∞'}   ∂L/∂w = ${Math.abs(w)<50?g.toFixed(3):'∞'}   步数 = ${trail.length?trail.length-1:0}`,80,36);
+  if(msg){c.fillStyle='#B4453A';c.font='bold 22px Microsoft YaHei';c.fillText(msg,W/2-140,80)}}
+ function stepOnce(){if(!trail.length)trail.push(w);const lr=+$('#gd-lr').value;w=w-lr*dL(w);trail.push(w);if(Math.abs(w)>3.3){msg='💥 步子太大，飞出山谷了！';stop()}else if(Math.abs(dL(w))<1e-3){stop()}draw()}
+ function stop(){clearInterval(timer);timer=null;$('#gd-auto').textContent='▶ 自动下山'}
+ $('#gd-step').onclick=stepOnce;$('#gd-auto').onclick=()=>{if(timer)stop();else{timer=setInterval(stepOnce,280);$('#gd-auto').textContent='⏸ 暂停'}};
+ $('#gd-reset').onclick=()=>{stop();w=(Math.random()<.5?-1:1)*(1+Math.random()*2.1);trail=[];msg='';draw()};
+ $('#gd-lr').oninput=e=>{$('#gd-lrv').textContent=(+e.target.value).toFixed(2)};
+ cv.addEventListener('click',e=>{const r=cv.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*W;stop();w=Math.max(-3.1,Math.min(3.1,Wx(x)));trail=[];msg='';draw()});draw();return{stop}})();
+hooks['s-gd']={leave(){GD.stop()}};
+
+/* ================= RL: PROSPECTING ROBOT ================= */
+const RL=(function(){const W=10,H=7,CS=64,START=[0,4],ORE=[8,4],MAXS=50,GAMMA=0.97,ALPHA=0.1,BETA=0.1;const DIRS=[[0,-1],[1,0],[0,1],[-1,0]],ARW=['↑','→','↓','←'];
+ const inRes=(x,y)=>x>=3&&x<=5&&y>=3&&y<=6;const phi=(x,y)=>4*Math.exp(-(Math.abs(x-ORE[0])+Math.abs(y-ORE[1]))/4);
+ const cv=$('#rl-cv'),c=cv.getContext('2d'),ch=$('#rl-chart'),cc=ch.getContext('2d');
+ let mode=2,ag,hist=[],recent=[],eps=0,total=0,training=false,watch=null,lastPath=null,on=false,explainHTML='';
+ const terr=Array.from({length:W*H},(_,i)=>hash('t'+i)%100/100);
+ function newAgent(){ag={th:new Float64Array(W*H*4),V:new Float64Array(W*H),vis:new Uint32Array(W*H)};hist=[];recent=[];eps=0;lastPath=null;explainHTML=''}
+ function pi(s){const l=[0,1,2,3].map(a=>ag.th[s*4+a]),m=Math.max(...l),e=l.map(v=>Math.exp(v-m)),z=e[0]+e[1]+e[2]+e[3];return e.map(v=>v/z)}
+ function samp(p){let r=Math.random(),cu=0;for(let i=0;i<4;i++){cu+=p[i];if(r<cu)return i}return 3}
+ function episode(){let[x,y]=START;const traj=[],path=[[x,y]];let found=false,res=0;
+  for(let t=0;t<MAXS;t++){const s=y*W+x,p=pi(s),a=samp(p);const nx=Math.min(W-1,Math.max(0,x+DIRS[a][0])),ny=Math.min(H-1,Math.max(0,y+DIRS[a][1]));let r=0,done=false;
+   if(mode===1){r=.5*((Math.abs(nx-START[0])+Math.abs(ny-START[1]))-(Math.abs(x-START[0])+Math.abs(y-START[1])))}
+   else{r+=GAMMA*phi(nx,ny)-phi(x,y);if(nx===ORE[0]&&ny===ORE[1]){r+=10;done=true}if(mode===3){r-=.05;if(inRes(nx,ny))r-=1}}
+   if(inRes(nx,ny))res++;if(nx===ORE[0]&&ny===ORE[1])found=true;traj.push({s,a,r,p});x=nx;y=ny;path.push([x,y]);if(done)break}
+  let G=0;for(let t=traj.length-1;t>=0;t--){G=traj[t].r+GAMMA*G;traj[t].G=G}
+  return{traj,path,found,res,steps:traj.length,G:traj.length?traj[0].G:0}}
+ function update(ep){for(const st of ep.traj){const A=st.G-ag.V[st.s];st.A=A;ag.V[st.s]+=BETA*(st.G-ag.V[st.s]);const p=pi(st.s);for(let b=0;b<4;b++)ag.th[st.s*4+b]+=ALPHA*A*((b===st.a?1:0)-p[b]);ag.vis[st.s]++}}
+ function trainOne(){const ep=episode();update(ep);eps++;total++;hist.push(ep.G);recent.push(ep);if(recent.length>100)recent.shift();return ep}
+ function stats(){$('#st-ep').textContent=eps;if(!recent.length){['st-ret','st-found','st-steps','st-res'].forEach(i=>$('#'+i).textContent='–');return}
+  const n=recent.length,av=f=>recent.reduce((a,e)=>a+f(e),0)/n;$('#st-ret').textContent=av(e=>e.G).toFixed(2);$('#st-found').textContent=(av(e=>e.found?1:0)*100).toFixed(0)+'%';$('#st-steps').textContent=av(e=>e.steps).toFixed(1);$('#st-res').textContent=av(e=>e.res).toFixed(1)}
+ function cell(x,y){return[x*CS+CS/2,y*CS+CS/2]}
+ function draw(robot){c.clearRect(0,0,640,448);
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const v=terr[y*W+x];c.fillStyle=`rgb(${246+v*6},${243+v*6},${235+v*5})`;c.fillRect(x*CS,y*CS,CS,CS)}
+  c.strokeStyle='rgba(25,25,25,.10)';for(let i=0;i<=W;i++){c.beginPath();c.moveTo(i*CS,0);c.lineTo(i*CS,448);c.stroke()}for(let j=0;j<=H;j++){c.beginPath();c.moveTo(0,j*CS);c.lineTo(640,j*CS);c.stroke()}
+  if(mode!==1){const[ox,oy]=cell(...ORE),g=c.createRadialGradient(ox,oy,5,ox,oy,CS*3.6);g.addColorStop(0,'rgba(154,107,31,.40)');g.addColorStop(1,'rgba(154,107,31,0)');c.fillStyle=g;c.fillRect(0,0,640,448);c.fillStyle='rgba(154,107,31,.9)';c.font='13px Microsoft YaHei';c.fillText('化探异常',ox-26,oy-38)}
+  c.fillStyle='rgba(95,122,69,.22)';c.fillRect(3*CS,3*CS,3*CS,4*CS);c.strokeStyle='#5F7A45';c.setLineDash([6,5]);c.lineWidth=2;c.strokeRect(3*CS+1,3*CS+1,3*CS-2,4*CS-2);c.setLineDash([]);
+  c.font='bold 15px Microsoft YaHei';c.fillStyle='#36532A';c.fillText('🌿 生态保护区',3*CS+44,3*CS+22);c.font='22px "Segoe UI Emoji"';[[3,5],[5,4],[4,6],[5,6],[3,3]].forEach(([x,y])=>c.fillText('🌲',x*CS+20,y*CS+44));
+  const[ox,oy]=cell(...ORE);c.font='34px "Segoe UI Emoji"';c.fillText('💎',ox-18,oy+12);const[sx,sy]=cell(...START);c.fillText('🏕',sx-18,sy+12);
+  c.font='bold 20px Consolas';for(let y=0;y<H;y++)for(let x=0;x<W;x++){const s=y*W+x;if(!ag.vis[s]||(x===ORE[0]&&y===ORE[1]))continue;const p=pi(s),a=p.indexOf(Math.max(...p));if(p[a]<.35)continue;c.fillStyle=`rgba(62,110,158,${.65+.35*p[a]})`;const[cx,cy]=cell(x,y);c.fillText(ARW[a],cx-6+ (x===START[0]&&y===START[1]?14:0),cy+7- (x===START[0]&&y===START[1]?18:0))}
+  const P=watch?watch.path.slice(0,watch.k+1):lastPath;if(P&&P.length>1){c.strokeStyle='rgba(138,109,31,.85)';c.lineWidth=4;c.lineJoin='round';c.beginPath();P.forEach((q,i)=>{const[a,b]=cell(...q);i?c.lineTo(a,b):c.moveTo(a,b)});c.stroke()}
+  const R=robot||(watch?watch.path[watch.k]:(lastPath?lastPath[lastPath.length-1]:START));if(R){const[a,b]=cell(...R);c.font='40px "Segoe UI Emoji"';c.fillText('🤖',a-20,b+14)}
+  c.fillStyle='rgba(250,249,245,.85)';c.fillRect(0,0,170,28);c.fillStyle='#BE5F3C';c.font='14px Microsoft YaHei';c.fillText('数字孪生 · 虚拟矿区',10,19)}
+ function chart(){const w=770,h=150;cc.clearRect(0,0,w,h);cc.fillStyle='#75726A';cc.font='13px Microsoft YaHei';cc.fillText('平均回报（滑动 50 回合）',10,18);if(hist.length<2)return;
+  const ma=[];let s=0;hist.forEach((v,i)=>{s+=v;if(i>=50)s-=hist[i-50];ma.push(s/Math.min(i+1,50))});const mn=Math.min(0,...ma),mx=Math.max(1,...ma);const X=i=>40+i/(ma.length-1)*(w-55),Y=v=>h-18-(v-mn)/(mx-mn)*(h-40);
+  cc.strokeStyle='#E6E1D6';cc.beginPath();cc.moveTo(40,Y(0));cc.lineTo(w-10,Y(0));cc.stroke();cc.fillText('0',22,Y(0)+4);cc.fillText(mx.toFixed(1),4,Y(mx)+16);
+  cc.strokeStyle='#BE5F3C';cc.lineWidth=2.5;cc.beginPath();ma.forEach((v,i)=>i?cc.lineTo(X(i),Y(v)):cc.moveTo(X(i),Y(v)));cc.stroke();cc.fillStyle='#75726A';cc.fillText(hist.length+' 回合',w-70,h-4)}
+ const MODEINFO={1:'<b class="c-amber">奖励 = 离营地越远越好。</b>先猜一猜：它会学会找矿吗？',2:'<b class="c-amber">奖励 = 找到矿 +10</b>（化探异常越强越接近矿，给一点线索）。路上的一切都不算钱。',3:'<b class="c-amber">奖励 = 找到矿 +10，但每走一步 −0.05（油耗），踏进保护区一次 −1。</b>代价被写进了目标。'};
+ const VERDICT={1:'🙃 它学会了跑到离营地最远的角落……然后在那儿转悠。找到矿率 ≈ 0。<br><b>你奖励什么，它就优化什么</b> —— 这叫 <b class="c-red">reward hacking</b>（奖励投机）。',2:'💎 找到矿了！但它<b>径直穿过生态保护区</b>（看「闯保护区」）。<br>目标里没写的代价，模型就当它不存在 —— 只顾「生产」的设计。',3:'🌱 找到矿，同时<b>绕开了保护区</b>，路线也不浪费。<br>把整条链上的代价都写进目标 = <b class="c-green">genuine sustainability</b>。'};
+ function info(){if(explainHTML){$('#rl-info').innerHTML=explainHTML;return}let h=MODEINFO[mode];if(eps>=400)h+='<div style="margin-top:10px">'+VERDICT[mode]+'</div>';else h+=`<div class="muted" style="margin-top:10px">按「开始训练」：机器人一开始乱走，每一回合结束后，用<b>策略梯度</b>调整每个格子里四个方向的概率（蓝色箭头 = 当前最可能的方向，棕色线 = 实际路线）。</div>`;$('#rl-info').innerHTML=h}
+ function setTrain(v){training=v;$('#rl-train').textContent=v?'⏸ 暂停训练':'▶ 开始训练'}
+ function loop(){if(!on)return;if(training){const sp=+$('#rl-speed').value;let ep;for(let i=0;i<sp;i++)ep=trainOne();lastPath=ep.path;stats();chart();if(eps%50<sp)info();if(eps>=3000)setTrain(false)}
+  if(watch){watch.f++;if(watch.f%7===0){watch.k++;if(watch.k>=watch.path.length){lastPath=watch.path;const e=watch.ep;watch=null;explainHTML=`<b>👀 这一回合</b>：走了 ${e.steps} 步 ｜ ${e.found?'<span class="c-green">找到矿 💎</span>':'<span class="c-red">没找到矿</span>'} ｜ 闯保护区 ${e.res} 次 ｜ 回报 G = <b>${e.G.toFixed(2)}</b><br><span class="muted">（演示回合只看不学，策略不变）</span>`;info()}}}
+  draw();requestAnimationFrame(loop)}
+ function bars(p,hl,col){return `<div style="display:flex;gap:6px;align-items:flex-end;height:64px">`+p.map((v,i)=>`<div style="text-align:center;font-family:Consolas;font-size:12px"><div style="width:30px;height:${4+v*50}px;background:${i===hl?col:'#E6E1D6'};border-radius:4px 4px 0 0;transition:.3s"></div>${ARW[i]} ${v.toFixed(2)}</div>`).join('')+'</div>'}
+ function explain(){setTrain(false);watch=null;const ep=episode();const st=ep.traj[0],s=st.s,before=pi(s),b=ag.V[s];update(ep);eps++;total++;hist.push(ep.G);recent.push(ep);if(recent.length>100)recent.shift();const after=pi(s),A=st.G-b;lastPath=ep.path;stats();chart();
+  const good=A>0;explainHTML=`<b>🔍 一次更新</b>：本回合回报 G = <b>${st.G.toFixed(2)}</b>，此前的经验预期 b = ${b.toFixed(2)} → 优势 <b>A = G − b = <span class="${good?'c-green':'c-red'}">${A>=0?'+':''}${A.toFixed(2)}</span></b> → ${good?'<b class="c-green">好于预期：提高</b>':'<b class="c-red">差于预期：降低</b>'}这一回合所选动作的概率
+  <div style="display:flex;gap:28px;align-items:flex-end;margin-top:8px"><div><div class="note">营地格 · 更新前</div>${bars(before,st.a,'#9A6B1F')}</div><div style="font-size:26px;padding-bottom:20px">⟹</div><div><div class="note">更新后（第一步选了 ${ARW[st.a]}）</div>${bars(after,st.a,good?'#5F7A45':'#B4453A')}</div>
+  <div class="mono" style="font-size:15px;color:#75726A;line-height:1.7;margin-left:auto">代理损失 L = −Σ A<sub>t</sub>·log π(a<sub>t</sub>|s<sub>t</sub>)<br>对 L 做梯度<b>下降</b> ⇔ 对期望奖励做梯度<b>上升</b><br>θ ← θ + α·A·∇log π</div></div>`;info()}
+ $('#rl-train').onclick=()=>{explainHTML='';setTrain(!training);info()};
+ $('#rl-watch').onclick=()=>{setTrain(false);const ep=episode();watch={path:ep.path,k:0,f:0,ep};explainHTML='<b>👀 演示中……</b>';info()};
+ $('#rl-explain').onclick=explain;
+ $('#rl-reset').onclick=()=>{setTrain(false);watch=null;newAgent();stats();chart();info()};
+ $$('#rl-modes .btn').forEach(b=>b.onclick=()=>{mode=+b.dataset.m;$$('#rl-modes .btn').forEach(x=>x.classList.toggle('on',x===b));setTrain(false);watch=null;newAgent();stats();chart();info()});
+ newAgent();stats();info();draw();
+ return{start(){if(!on){on=true;loop()}},stop(){on=false;setTrain(false)},total:()=>total}})();
+hooks['s-rl']={enter(){RL.start()},leave(){RL.stop()}};
+
+/* ================= SUMMARY ================= */
+(function(){const S=[['By'],['simulat','ing','模拟','#B0557D'],['processes'],['before'],['physical'],['trials',null],[','],['we'],['can'],['optim','ize','优化','#BE5F3C'],['perform','ance','表现','#9A6B1F'],['and'],['reduce','','减少','#5F7A45'],['waste','','浪费','#5F7A45'],['and'],['risk','','风险','#5F7A45'],['.']];
+ $('#sum-sent').innerHTML=S.map((t,i)=>`<span class="tok sumt" style="font-size:30px;opacity:0;transform:translateY(10px);transition:all .4s ${i*.07}s;${t[3]?`border-color:${t[3]};background:${t[3]}22`:''}${t[0]===','||t[0]==='.'?';border-color:transparent;background:none':''}"><span class="pc">${t[0]}</span>${t[1]?`<span class="pc">${t[1]}</span>`:''}${t[2]?`<span style="position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-size:14px;color:${t[3]}">${t[2]}</span>`:''}</span>`).join('');
+ hooks['s-sum']={enter(){const n=RL.total();$('#sum-err').textContent=n>0?n.toLocaleString():'几百'},step(sl,n){$$('.sumt').forEach(t=>{t.style.opacity=n>=4?1:0;t.style.transform=n>=4?'none':'translateY(10px)'})}}})();
+
+/* ================= INIT ================= */
+const ACT=(location.search.match(/act=([^&]+)/)||[])[1];if(ACT)setTimeout(()=>{ACT.split(',').forEach((a,i)=>setTimeout(()=>{if(a!=='w'){const b=document.getElementById(a);b&&b.click()}},i*700))},300);
+if(location.search.includes('shot'))document.head.insertAdjacentHTML('beforeend','<style>*{transition:none!important;animation:none!important}</style>');
+fit();
+const hp=location.hash.slice(1).split('.'),h0=parseInt(hp[0]);go(h0>0&&h0<=slides.length?h0-1:0,0);const s0=parseInt(hp[1]||0);for(let i=0;i<s0;i++)next();
+</script>
+</body>
+</html>
