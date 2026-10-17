@@ -102,13 +102,13 @@ kbd{font-family:var(--mono);font-size:14px;background:var(--card);border:1px sol
 .sent svg.arcs{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .arc{fill:none;stroke-linecap:round;transition:opacity .35s, stroke-width .3s}
 .arc-l{font-size:14px;font-family:var(--zh);paint-order:stroke;stroke:#FFFFFF;stroke-width:5px;transition:opacity .35s;font-weight:700}
-.sent.colored .tok[data-r=pur]{border-color:#D8C7E4;background:#F8F4FB}
-.sent.colored .tok[data-r=sub]{border-color:#EBC9B8;background:#FDF2EC}
-.sent.colored .tok[data-r=pre]{border-color:#E4CFA6;background:#FCF6E8}
-.sent.colored .tok[data-r=obj]{border-color:#CBDBBB;background:#F4F8EF}
-.sent.colored .tok[data-r=mod]{border-color:#EBC2D3;background:#FCF2F6}
-.sent.colored .tok[data-r=cls]{border-color:#BED2E6;background:#F1F6FB}
-.sent.colored .tok[data-r=adv]{border-color:#E2D49B;background:#FBF7E7}
+.sent.colored .tok[data-r=pur],.legend i[data-r=pur]{border-color:#D8C7E4;background:#F8F4FB}
+.sent.colored .tok[data-r=sub],.legend i[data-r=sub]{border-color:#EBC9B8;background:#FDF2EC}
+.sent.colored .tok[data-r=pre],.legend i[data-r=pre]{border-color:#E4CFA6;background:#FCF6E8}
+.sent.colored .tok[data-r=obj],.legend i[data-r=obj]{border-color:#CBDBBB;background:#F4F8EF}
+.sent.colored .tok[data-r=mod],.legend i[data-r=mod]{border-color:#EBC2D3;background:#FCF2F6}
+.sent.colored .tok[data-r=cls],.legend i[data-r=cls]{border-color:#BED2E6;background:#F1F6FB}
+.sent.colored .tok[data-r=adv],.legend i[data-r=adv]{border-color:#E2D49B;background:#FBF7E7}
 .sent.isolated .tok:not(.core){opacity:.14;transform:scale(.86)}
 .sent.skel .tok.core{box-shadow:0 0 0 2px var(--coral),0 6px 18px rgba(190,95,60,.18);border-color:var(--clay)}
 .sent.focus .tok{opacity:.38}
@@ -116,7 +116,7 @@ kbd{font-family:var(--mono);font-size:14px;background:var(--card);border:1px sol
 .sent.focus .tok.hl2{opacity:1}
 .legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-size:16px;color:var(--ink2)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
-.legend i{width:14px;height:14px;border-radius:5px;display:inline-block;border:1px solid rgba(25,25,25,.12)}
+.legend i{width:14px;height:14px;border-radius:5px;display:inline-block;border:1.5px solid #DDD6C6}
 .sk-box{font-size:30px;text-align:center;font-weight:700;letter-spacing:.2px;color:var(--ink)}
 .sk-box em{font-style:normal;color:var(--clay)}
 /* ---------- word cards ---------- */
@@ -951,7 +951,7 @@ function buildSentence(sl){const id=sl.dataset.sent,D=SENTS[id];const el=$('.sen
  el.innerHTML=toks.map(t=>t.br?'<div class="brk"></div>':`<span class="tok ${t.r==='p'?'punct':''} ${t.core?'core':''}" data-r="${t.r}" data-k="${t.k}" style="font-size:${D.fs}px">${t.pieces.map(p=>`<span class="pc">${p}</span>`).join('')}<span class="tid">${t.pieces.map(p=>hash(p.toLowerCase())%30000+1000).join('·')}</span></span>`).join('')+'<svg class="arcs"></svg>';
  $$('.tok',el).forEach(t=>{if(t.dataset.k)map[t.dataset.k]=t});
  const roles=[...new Set(toks.filter(t=>!t.br&&t.r!=='p').map(t=>t.r))];
- const lg=$('.legend',sl);lg.style.transition='opacity .4s';lg.style.opacity=0;lg.innerHTML=roles.map(r=>`<span><i style="background:${ROLE[r][1]}"></i>${ROLE[r][0]}</span>`).join('')+'<span class="muted">｜ 第三步恢复完整句子并显示连线：粗细表示关系强弱 · 悬停查看关联词</span>';
+ const lg=$('.legend',sl);lg.style.transition='opacity .4s';lg.style.opacity=0;lg.innerHTML=roles.map(r=>`<span><i data-r="${r}"></i>${ROLE[r][0]}</span>`).join('')+'<span class="muted">｜ 第三步恢复完整句子并显示连线：粗细表示关系强弱 · 悬停查看关联词</span>';
  const sb=$('.sbottom',sl);sb.style.cssText='display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:16px';
  sb.innerHTML=`<div><div class="card f" data-f="2" style="margin-bottom:12px;padding:14px 18px"><div class="note">主干（骨架）</div><div class="sk-box" style="font-size:24px;text-align:left">${D.skel}</div></div><div class="card f glow" data-f="4" style="padding:14px 18px"><div class="note">参考译文</div><div class="zh" style="font-size:21px;line-height:1.6">${D.zh}</div></div></div>
  <div><div class="card f" data-f="4" style="padding:12px 16px;font-size:17px;line-height:1.6;margin-bottom:12px">${D.notes[0]}</div><div class="card f" data-f="4" style="padding:12px 16px;font-size:17px;line-height:1.6">${D.notes[1]}</div></div>
