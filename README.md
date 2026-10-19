@@ -1,6 +1,6 @@
 # 卓越研究生英语综合教程2（理工篇）UNIT 1 Reading 第七段讲解
 
-一套用于课堂讲解的交互式 HTML 幻灯片（interactive HTML slides），共 22 页。主题为「从虚拟制造到智能勘查」，围绕 Intelligent Manufacturing and Sustainability 的第七段展开。
+一套用于课堂讲解的交互式 HTML 幻灯片（interactive HTML slides），共 22 页。主题为「从虚拟制造到智能勘查」，围绕 reading材料 的第七段展开。
 
 本项目结合了本人的专业背景，将英语阅读、词汇和语法讲解与矿床学、智能勘查及 AI 联系起来：从 CNC / CMM 模拟器与数字孪生出发，延伸到语言模型、梯度下降，以及找矿机器人的强化学习探索。
 
@@ -40,4 +40,4 @@ PDF 展示各页讲解内容展开后的静态画面；动画、悬停释义、�
 
 ## 制作说明
 
-主题与内容由 GPT-6 Astra、GPT-6.1 Sol、Claude Opus 5.5、DeepSeek-V4.1-Flash 1017 在 Codex 与 DeepSeek Harness 中，经多轮对话制作，并由本人结合专业背景持续调整与勘误。
+主题与内容由 GPT-6 Astra、GPT-6.1 Sol、Claude Opus 5.5、DeepSeek-V4.1-Flash 1017 在 Codex 与 DeepSeek Harness 中，经多轮对话制作，并由本人调整与勘误。
