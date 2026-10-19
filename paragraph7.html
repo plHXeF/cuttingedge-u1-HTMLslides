@@ -522,14 +522,14 @@ input[type=text]:focus{outline:none;border-color:var(--coral);box-shadow:0 0 0 3
   <div class="sent"></div>
   <div class="sbottom"></div>
 </section>
-<section class="slide" data-title="第4句：模拟器展示生产变革" data-sent="4" data-steps="4">
-  <h2><span class="no">04</span>S4 · 模拟器展示生产变革<span class="tag">-ing 后置修饰 + 宾语从句</span></h2>
+<section class="slide" data-title="第4句：数字方案降低培训成本" data-sent="4" data-steps="4">
+  <h2><span class="no">04</span>S4 · 数字方案降低培训成本<span class="tag">-ing 后置修饰 + 宾语从句</span></h2>
   <div class="legend"></div>
   <div class="sent"></div>
   <div class="sbottom"></div>
 </section>
-<section class="slide" data-title="第5句：模拟软件已开发完成" data-sent="5" data-steps="4">
-  <h2><span class="no">04</span>S5 · 模拟软件已开发完成<span class="tag">现在完成时被动</span></h2>
+<section class="slide" data-title="第5句：模拟器已开发完成" data-sent="5" data-steps="4">
+  <h2><span class="no">04</span>S5 · 模拟器已开发完成<span class="tag">现在完成时被动</span></h2>
   <div class="legend"></div>
   <div class="sent"></div>
   <div class="sbottom"></div>
@@ -710,25 +710,25 @@ const SENTS={
  notes:['<b>play a crucial role in (doing) sth</b><br>在……中起关键作用（crucial ≈ key / vital）<br><span class="muted">in 是介词 → 后接动名词 optimizing</span>',
   '<b class="c-pink">名词堆叠</b> sustainability performance<br>= performance <i>in terms of</i> sustainability<br>英语爱把名词叠起来，中文要补出关系：「可持续性<b>方面的</b>表现」',
   '<b class="c-yellow">at every stage, from A to B</b><br>from…to… 给 every stage 划定范围<br><b>end-of-life</b>：连字符复合形容词，「寿命终结的」→ 报废阶段<br><span class="muted">同类：state-of-the-art · real-world</span>']},
-4:{fs:22,toks:'The/sub/the* CNC/sub/cnc* (/p computer/mod/c1 numer·ical/mod/c2 control/mod/c3 )/p and/sub/and* CMM/sub/cmm* (/p co·ordin·ate/mod/m1 measur·ing/mod/m2 machine/mod/m3 )/p simul·ator/sub/sim* | is/pre/is* an/obj/an* example/obj/ex* demonstrat·ing/mod/demo how/cls/how intelligent/cls/int manufactur·ing/cls/man trans·form·s/cls/tf the/cls/the2 produc·tion/cls/prodn process/cls/proc ./p',
- arcs:[['is','sim','主语是谁？',1],['is','ex','系表',1,'u'],['demo','ex','后置定语',.9,'u'],['how','demo','宾语从句',.8,'d'],['tf','man','主谓',.8,'u'],['tf','proc','动宾',.8,'u'],['cnc','sim','',.55,'u'],['cmm','sim','共同修饰 simulator',.55,'u'],['c3','cnc','全称',.4,'d'],['m3','cmm','全称',.4,'d']],
+4:{fs:22,toks:'The/sub/the* CNC/sub/cnc* (/p computer/mod/c1 numer·ical/mod/c2 control/mod/c3 )/p and/sub/and* CMM/sub/cmm* (/p co·ordin·ate/mod/m1 measur·ing/mod/m2 machine/mod/m3 )/p simul·ator/sub/sim* | is/pre/is* an/obj/an* example/obj/ex* demonstrat·ing/mod/demo how/cls/how smart/cls/smart digi·tal/cls/digital solu·tion·s/cls/sol can/cls/can train/cls/train staff/cls/staff at/cls/at a/cls/a2 much/cls/much low·er/cls/lower cost/cls/cost ./p',
+ arcs:[['is','sim','主语是谁？',1],['is','ex','系表',1,'u'],['demo','ex','后置定语',.9,'u'],['how','demo','宾语从句',.8,'d'],['train','sol','主谓',.8,'u'],['train','staff','动宾',.8,'u'],['cnc','sim','',.55,'u'],['cmm','sim','共同修饰 simulator',.55,'u'],['c3','cnc','全称',.4,'d'],['m3','cmm','全称',.4,'d'],['can','train','情态',.45,'d'],['cost','train','费用状语',.6,'d'],['much','lower','修饰比较级',.45,'u']],
  skel:'<em>The CNC and CMM simulator is an example</em> …',
- zh:'CNC（计算机数控）与 CMM（三坐标测量机）模拟器就是一个例子，它<b>展示了智能制造如何改变生产过程</b>。',
+ zh:'CNC（计算机数控）与 CMM（三坐标测量机）模拟器就是一个例子，它<b>展示了智能数字化方案如何以低得多的成本培训员工</b>。',
  notes:['<b>主干：The … simulator is an example.</b><br>括号里是缩写的全称（同位解释）；CNC and CMM 一起修饰 simulator：<b>一个</b>同时模拟两种机器的模拟器。',
   '<b class="c-pink">demonstrating… 后置修饰 example</b><br>= an example <u>that demonstrates</u> …<br>🔁 对照第1句 factors <u>transcending</u>…：同一结构第二次出现！',
-  '<b class="c-blue">how 引导宾语从句</b>：作 demonstrating 的宾语<br>从句用<b>陈述语序</b>：<br>✔ how intelligent manufacturing transforms…<br>✘ how does intelligent manufacturing transform…']},
-5:{fs:27,toks:'Soft·ware/sub/sw* has/pre/has* been/pre/been* develop·ed/pre/dev* | for/adv/for simul·at·ing/adv/sim CNC·s/obj/cncs ,/p CMM·s/obj/cmms ,/p and/obj/and the/obj/the manufactur·ing/obj/man process·es/obj/proc ./p',
- arcs:[['dev','sw','被开发的是什么？',1,'u'],['has','dev','现在完成',.5,'d'],['been','dev','被动',.5,'u'],['for','dev','用途',.7],['sim','for','介词+动名词',.5,'u'],['sim','cncs','模拟 ①',1,'d'],['sim','cmms','模拟 ②',.85,'d'],['sim','proc','模拟 ③',.85,'d'],['man','proc','',.35,'u']],
- skel:'<em>Software has been developed</em> …',
- zh:'目前已开发出<b>用于模拟</b>数控机床、三坐标测量机以及制造过程的软件。',
- notes:['<b class="c-amber">has been developed</b> = has + been + done<br><b>现在完成时</b>：已经开发出来，<b>结果仍在</b>（软件现在就能用）<br><b>被动</b>：软件是被开发的对象',
-  '<b>为什么用被动？</b><br>谁开发的不重要，重点是「软件」。<br>中文少用「被」：译成「人们已开发出……」或「已有……软件」。',
-  '<b class="c-yellow">for doing 表用途</b>，后接三个并列宾语 A, B, and C<br><b>software 不可数</b>：a piece of software ✔ / softwares ✘<br><span class="muted">CNCs、CMMs 在这里指「机器」，所以可以加 s</span>']},
+  '<b class="c-blue">how 引导宾语从句</b>，用陈述语序：<br>✔ how smart digital solutions <b>can train</b> staff…<br>✘ how <b>can</b> smart digital solutions train staff…<br><b>train staff</b>：培训员工；can + 动词原形<br><b>at a much lower cost</b>：以低得多的成本<br><span class="muted">much 修饰比较级 lower</span>']},
+5:{fs:27,toks:'This/sub/this* simul·ator/sub/simulator* has/pre/has* recently/adv/recent been/pre/been* develop·ed/pre/dev* | for/adv/for simul·at·ing/adv/sim CNC·s/obj/cncs ,/p CMM·s/obj/cmms ,/p and/obj/and the/obj/the manufactur·ing/obj/man process·es/obj/proc ./p',
+ arcs:[['dev','simulator','被开发的是什么？',1,'u'],['has','dev','现在完成',.5,'d'],['been','dev','被动',.5,'u'],['for','dev','用途',.7],['sim','for','介词+动名词',.5,'u'],['sim','cncs','模拟 ①',1,'d'],['sim','cmms','模拟 ②',.85,'d'],['sim','proc','模拟 ③',.85,'d'],['man','proc','',.35,'u'],['recent','dev','时间状语',.5,'d']],
+ skel:'<em>This simulator has been developed</em> …',
+ zh:'这款模拟器最近已开发完成，<b>用于模拟</b>数控机床、三坐标测量机以及制造过程。',
+ notes:['<b class="c-amber">has recently been developed</b><br><b>现在完成时</b>：has + been + done，结果仍在<br><b>recently</b> = 最近，作时间状语<br><b>被动</b>：模拟器是被开发的对象',
+  '<b>为什么用被动？</b><br>谁开发的不重要，重点是「模拟器」。<br>中文少用「被」：译成「这款模拟器最近已开发完成」。',
+  '<b class="c-yellow">for doing 表用途</b>，后接三个并列宾语 A, B, and C<br><b>this simulator</b>：回指 S4 的模拟器<br><span class="muted">CNCs、CMMs 在这里指「机器」，所以可以加 s</span>']},
 6:{fs:21,toks:'It/sub/it* provide·s/pre/prov* a/obj/a* virtual/obj/virt environ·ment/obj/env* | that/cls/that elimin·ate·s/cls/elim material/cls/mat waste/cls/waste ,/p machine/cls/mach down·time/cls/dt ,/p or/cls/or the/cls/the risk/cls/risk of/cls/of damage/cls/dmg to/cls/to expens·ive/cls/expv equip·ment/cls/eq ./p',
  arcs:[['prov','it','主谓',1,'u'],['prov','env','动宾',1,'u'],['virt','env','定语',.5,'d'],['that','env','先行词',.9],['elim','that','主谓',.7,'u'],['elim','waste','消除 ①',1,'u'],['elim','dt','消除 ②',.9,'u'],['elim','risk','消除 ③',.9,'u'],['mat','waste','',.3,'d'],['mach','dt','',.3,'d'],['dmg','risk','risk of',.6,'d'],['eq','dmg','damage to',.6,'d']],
  skel:'<em>It provides a</em> … <em>environment</em>',
  zh:'它提供了一个虚拟环境，可以<b>避免材料浪费、机器停机以及昂贵设备受损的风险</b>。',
- notes:['<b class="c-cyan">It = Software</b>（回指上一句）<br><b class="c-blue">that eliminates…</b> 定语从句修饰 environment<br><span class="muted">or 在列举中 ≈「以及」</span>',
+ notes:['<b class="c-cyan">It = This simulator</b>（回指上一句）<br><b class="c-blue">that eliminates…</b> 定语从句修饰 environment<br><span class="muted">or 在列举中 ≈「以及」</span>',
   '<b>eliminate 的三个宾语</b><br>① material waste 材料浪费<br>② machine downtime 停机时间<br>③ the risk of damage <b>to</b> expensive equipment <span class="muted">（damage to sth，不是 of）</span>',
   '<b class="c-red">🧐 批判性阅读</b><br>eliminate 语气很强。虚拟环境消除的是<b>「试错」阶段</b>的代价；真实加工仍会耗材，计算机也要耗电。<br>更严谨的说法：<i>greatly reduces</i>']}
 };
@@ -798,10 +798,10 @@ document.addEventListener('click',e=>{
 const PARA=["To attain genuine sustainability, designers must consider various factors transcending the product production.",
 "They need to adopt a comprehensive approach that encompasses the entire value chain.",
 "Digital twin technology plays a crucial role in optimizing sustainability performance at every stage, from raw material extraction to end-of-life disposal.",
-"The CNC (computer numerical control) and CMM (coordinate measuring machine) simulator is an example demonstrating how intelligent manufacturing transforms the production process.",
-"Software has been developed for simulating CNCs, CMMs, and the manufacturing processes.",
+"The CNC (computer numerical control) and CMM (coordinate measuring machine) simulator is an example demonstrating how smart digital solutions can train staff at a much lower cost.",
+"This simulator has recently been developed for simulating CNCs, CMMs, and the manufacturing processes.",
 "It provides a virtual environment that eliminates material waste, machine downtime, or the risk of damage to expensive equipment."];
-const GL={'attain':'达到；实现','genuine':'真正的','sustainability':'可持续性','transcending':'超越；超出','comprehensive':'全面的；综合的','approach':'方法；途径','encompasses':'包含；涵盖','value chain':'价值链','Digital twin':'数字孪生（第6段介绍过）','crucial':'关键的','optimizing':'优化','performance':'表现；性能','extraction':'开采；提取','end-of-life':'寿命终结的 → 报废的','disposal':'处置；处理','CNC':'计算机数控 —— 下一页详细讲','CMM':'三坐标测量机 —— 下一页详细讲','simulator':'模拟器','demonstrating':'展示；证明','transforms':'改变；转变','simulating':'模拟','virtual':'虚拟的','eliminates':'消除','downtime':'停机时间','equipment':'设备'};
+const GL={'attain':'达到；实现','genuine':'真正的','sustainability':'可持续性','transcending':'超越；超出','comprehensive':'全面的；综合的','approach':'方法；途径','encompasses':'包含；涵盖','value chain':'价值链','Digital twin':'数字孪生（第6段介绍过）','crucial':'关键的','optimizing':'优化','performance':'表现；性能','extraction':'开采；提取','end-of-life':'寿命终结的 → 报废的','disposal':'处置；处理','CNC':'计算机数控 —— 下一页详细讲','CMM':'三坐标测量机 —— 下一页详细讲','simulator':'模拟器','demonstrating':'展示；证明','smart':'智能的','digital':'数字的；数字化的','solutions':'解决方案','train':'培训（此处不是「火车」）','staff':'员工；全体工作人员','much lower cost':'低得多的成本（much 修饰比较级 lower）','recently':'最近；近来','simulating':'模拟','virtual':'虚拟的','eliminates':'消除','downtime':'停机时间','equipment':'设备'};
 (function(){const keys=Object.keys(GL).sort((a,b)=>b.length-a.length);
  $('#para7').innerHTML=PARA.map((s,i)=>{let t=s;const ph=[];keys.forEach(k=>{t=t.replace(new RegExp('\\b'+k.replace(/-/g,'\\-')+'\\b','g'),m=>{ph.push(`<span class="w" data-g="<b>${m}</b>　${GL[k]}">${m}</span>`);return '\u0001'+(ph.length-1)+'\u0002'})});
   t=t.replace(/\u0001(\d+)\u0002/g,(_,n)=>ph[n]);return `<span class="s" data-i="${i}"><span class="sn">S${i+1}</span>${t}</span> `}).join('')})();
@@ -962,7 +962,7 @@ function layoutArcs(sl){const S=sl._S,el=S.el,W=el.offsetWidth,H=el.offsetHeight
  let s='';
  S.arcs.forEach((a,i)=>{const A=S.map[a[0]],B=S.map[a[1]];if(!A||!B){console.warn('arc',a);return}
   const ax=A.offsetLeft+A.offsetWidth/2,bx=B.offsetLeft+B.offsetWidth/2,at=A.offsetTop,ab=at+A.offsetHeight,bt=B.offsetTop,bb=bt+B.offsetHeight;let d,lx=ax*.4+bx*.6,ly;
-  if(Math.abs(at-bt)<8){const dx=Math.abs(ax-bx),h=14+62*(1-Math.exp(-dx/350));if((a[4]||'u')==='u'){d=`M${ax},${at-2} C${ax},${at-h*1.33} ${bx},${bt-h*1.33} ${bx},${bt-2}`;ly=at-h-5}else{d=`M${ax},${ab+2} C${ax},${ab+h*1.33} ${bx},${bb+h*1.33} ${bx},${bb+2}`;ly=ab+h+15}}
+  if(Math.abs(at-bt)<8){const dx=Math.abs(ax-bx),h=sl.dataset.sent==='5'&&a[0]==='recent'?22:14+62*(1-Math.exp(-dx/350));if((a[4]||'u')==='u'){d=`M${ax},${at-2} C${ax},${at-h*1.33} ${bx},${bt-h*1.33} ${bx},${bt-2}`;ly=at-h-5}else{d=`M${ax},${ab+2} C${ax},${ab+h*1.33} ${bx},${bb+h*1.33} ${bx},${bb+2}`;ly=ab+h+15}}
   else if(at<bt){const m=bt-ab;d=`M${ax},${ab+2} C${ax},${ab+m*.7} ${bx},${bt-m*.7} ${bx},${bt-2}`;ly=(ab+bt)/2+5}
   else{const m=at-bb;d=`M${ax},${at-2} C${ax},${at-m*.7} ${bx},${bb+m*.7} ${bx},${bb+2}`;ly=(bb+at)/2+5}
   const col=ROLE[A.dataset.r][1],w=a[3];
@@ -980,12 +980,12 @@ function focusTok(sl,k,on){const S=sl._S;if(!S.shown){return}
 $$('.slide[data-sent]').forEach(buildSentence);
 
 /* ================= PARAGRAPH MAP ================= */
-(function(){const svg=$('#map-svg');const B=[['原则 Principle','S1–S2','#7C5C9E',['transcend 生产','encompass 整条价值链']],['技术 Technology','S3','#BE5F3C',['digital twin','optimize 每个阶段']],['例子 Example','S4–S5','#9A6B1F',['CNC & CMM simulator','software has been developed']],['收益 Benefit','S6','#5F7A45',['virtual environment','eliminates waste ·','downtime · risk']]];
+(function(){const svg=$('#map-svg');const B=[['原则 Principle','S1–S2','#7C5C9E',['transcend 生产','encompass 整条价值链']],['技术 Technology','S3','#BE5F3C',['digital twin','optimize 每个阶段']],['例子 Example','S4–S5','#9A6B1F',['CNC & CMM simulator','has recently been developed']],['收益 Benefit','S6','#5F7A45',['virtual environment','eliminates waste ·','downtime · risk']]];
  const w=310,g=72,x0=(1456-(4*w+3*g))/2,y=20,h=190;let s='';
  B.forEach((b,i)=>{const x=x0+i*(w+g);s+=`<g class="mp" data-i="${i}" style="opacity:0;transition:opacity .5s,transform .5s;transform:translateY(16px)"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="18" fill="#FFFFFF" stroke="${b[2]}" stroke-width="2.5"/><text x="${x+22}" y="${y+44}" font-size="26" font-weight="800" fill="${b[2]}">${b[0]}</text><text x="${x+w-20}" y="${y+44}" font-size="17" text-anchor="end" fill="#75726A" font-family="Consolas">${b[1]}</text>${b[3].map((l,j)=>`<text x="${x+22}" y="${y+90+j*34}" font-size="19" fill="#191919">• ${l}</text>`).join('')}</g>`;
   if(i<3)s+=`<path class="mpa" data-i="${i+1}" d="M${x+w+8} ${y+h/2}h${g-16}" stroke="#75726A" stroke-width="3" style="opacity:0;transition:.4s"/>`});
  const cy=y+h+40;
- s+=`<g id="mp-co" style="opacity:0;transition:.5s"><text x="${x0}" y="${cy+10}" font-size="19" fill="#75726A">🔗 句与句之间的联系：指代与衔接</text>`+[["S2 They → S1 designers","#7C5C9E"],["S6 It → S5 Software","#5F7A45"],["S3 Digital twin ← 第 6 段","#BE5F3C"]].map((t,i)=>`<rect x="${x0+i*400}" y="${cy+30}" width="370" height="46" rx="23" fill="${t[1]}22" stroke="${t[1]}"/><text x="${x0+i*400+185}" y="${cy+60}" text-anchor="middle" font-size="19" font-weight="700" fill="${t[1]}">${t[0]}</text>`).join("")+`</g>`;
+ s+=`<g id="mp-co" style="opacity:0;transition:.5s"><text x="${x0}" y="${cy+10}" font-size="19" fill="#75726A">🔗 句与句之间的联系：指代与衔接</text>`+[["S2 They → S1 designers","#7C5C9E"],["S6 It → S5 This simulator","#5F7A45"],["S3 Digital twin ← 第 6 段","#BE5F3C"]].map((t,i)=>`<rect x="${x0+i*400}" y="${cy+30}" width="370" height="46" rx="23" fill="${t[1]}22" stroke="${t[1]}"/><text x="${x0+i*400+185}" y="${cy+60}" text-anchor="middle" font-size="19" font-weight="700" fill="${t[1]}">${t[0]}</text>`).join("")+`</g>`;
  svg.innerHTML=s;
  hooks['s-map']={step(sl,n){$$('.mp',svg).forEach(g=>{const on=+g.dataset.i<n;g.style.opacity=on?1:0;g.style.transform=on?'none':'translateY(16px)'});$$('.mpa',svg).forEach(p=>p.style.opacity=+p.dataset.i<n?1:0);$('#mp-co').style.opacity=n>=4?1:0}};
  $('#s-map').dataset.steps=5})();
